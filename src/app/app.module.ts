@@ -12,31 +12,16 @@ import { ErrorPageComponent } from './views/pages/error-page/error-page.componen
 
 import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-import {
-  FaIconLibrary,
-  FontAwesomeModule,
-} from '@fortawesome/angular-fontawesome';
-import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
-import { DateTimePickerComponent } from './views/customComponents/date-time-picker/date-time-picker.component';
-
 @NgModule({
   declarations: [
     AppComponent,
-    ErrorPageComponent,
-    DateTimePickerComponent
+    ErrorPageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
-    FormsModule,
-    NgbModule,
-    FontAwesomeModule,
-    ReactiveFormsModule
   ],
   providers: [
     AuthGuard,
@@ -55,7 +40,5 @@ import { DateTimePickerComponent } from './views/customComponents/date-time-pick
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(library: FaIconLibrary) {
-    library.addIcons(faCalendar, faClock);
-  }
+  
  }

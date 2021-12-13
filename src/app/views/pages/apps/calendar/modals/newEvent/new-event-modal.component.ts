@@ -15,9 +15,13 @@ import { Appointment } from 'src/app/models/appointment';
      newAppointment: Appointment;
      formGroup : FormGroup;
      dateModel: Date = new Date();
+     stringDateModel: string = new Date().toString();
 
-
-  ngOnInit(): void { }
+  ngOnInit(): void {    
+    this.formGroup = new FormGroup({
+      activeEndDate:  new FormControl(new Date(), {validators: [Validators.required, DateTimeValidator]})
+    }, { updateOn: 'change' });
+   }
 
 
   modalClose(){
@@ -29,3 +33,13 @@ import { Appointment } from 'src/app/models/appointment';
     this.newAppointment = new Appointment();
   } 
  }
+
+ export const DateTimeValidator = (fc: FormControl) => {
+  const date = new Date(fc.value);
+  const isValid = !isNaN(date.valueOf());
+  return isValid ? null : {
+      isValid: {
+          valid: false
+      }
+  };
+};

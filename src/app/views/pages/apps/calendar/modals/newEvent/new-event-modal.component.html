@@ -7,6 +7,15 @@
       </button>
     </div>
     <div class="modal-body">
+      <form>
+        <div class="row" [formGroup]="formGroup">
+          <div class="form-group col-sm-6">
+            <label for="activeEndDate">Active End Date</label>
+            <app-date-time-picker formControlName="activeEndDate" name="activeEndDate"></app-date-time-picker>   
+           
+          </div>
+        </div>
+      </form>
         <!-- <div class="card">
             <div class="card-body">
               <h6 class="card-title">Basic Form</h6>

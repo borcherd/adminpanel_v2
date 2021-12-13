@@ -20,6 +20,10 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
+import { DateTimePickerComponent } from '../../customComponents/date-time-picker/date-time-picker.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
@@ -50,7 +54,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [ CalendarComponent, AppsComponent],
+  declarations: [ CalendarComponent, AppsComponent, DateTimePickerComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -61,6 +65,7 @@ const routes: Routes = [
     NgbTooltipModule,
     NgbNavModule,
     NgbCollapseModule,
+    ReactiveFormsModule,
     NgSelectModule,
     SimplemdeModule.forRoot({
       provide: SIMPLEMDE_CONFIG,
