@@ -7,43 +7,35 @@
       </button>
     </div>
     <div class="modal-body">
-      <form>
-        <div class="row" [formGroup]="formGroup">
-          <div class="form-group col-sm-6">
-            <label for="activeEndDate">Active End Date</label>
-            <app-date-time-picker formControlName="activeEndDate" name="activeEndDate"></app-date-time-picker>   
-           
-          </div>
-        </div>
-      </form>
-        <!-- <div class="card">
+         <div class="card">
             <div class="card-body">
               <h6 class="card-title">Basic Form</h6>
-              <form class="forms-sample">
+              <form class="forms-sample" [formGroup]="newEventForm" (ngSubmit)="newEvent($event)">
                 <div class="form-group">
                     <label for="exampleInputStart">Start datum en tijd</label>
-                  <input type="datetime" class="form-control" id="exampleInputStart" placeholder="datetime">
+                  <input type="text" class="form-control" placeholder="datetime" formControlName="startDateTime">
                   </div>
                 <div class="form-group">
                   <label for="exampleInputEnd">Eind datum en tijd</label>
-                  <input type="datetime" class="form-control" id="exampleInputEnd" placeholder="datetime">
+                  <input type="datetime" class="form-control" placeholder="datetime" formControlName="endDateTime">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputDescription">Beschrijving</label>
-                  <input type="text" class="form-control" id="exampleInputDescription" autocomplete="off" placeholder="Description">
+                  <input type="text" class="form-control"autocomplete="off" placeholder="Description" formControlName="description">
                 </div>
                 <div class="form-check form-check-flat form-check-primary">
                   <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input">
+                    <input type="checkbox" class="form-check-input" formControlName="newCustomer">
                     <i class="input-frame"></i>
                     Nieuwe klant? 
                   </label>
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                <button type="submit" class="btn btn-primary mr-2" (click)="newEvent()" >Submit</button>
                 <button class="btn btn-light">Cancel</button>
               </form>
+
             </div>
-          </div> -->
+          </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-primary" (click)="save()" id="saveModal">Save event</button>

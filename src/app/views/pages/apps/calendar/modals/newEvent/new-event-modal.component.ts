@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Appointment } from 'src/app/models/appointment';
@@ -9,37 +9,36 @@ import { Appointment } from 'src/app/models/appointment';
   templateUrl: './new-event-modal.component.html'
 })
 
- export class newEventModalComponent extends NgbModal implements OnInit{
-  
-     modalcomponent: NgbModal;
-     newAppointment: Appointment;
-     formGroup : FormGroup;
-     dateModel: Date = new Date();
-     stringDateModel: string = new Date().toString();
+export class newEventModalComponent  extends NgbModal implements OnInit{
 
-  ngOnInit(): void {    
-    this.formGroup = new FormGroup({
-      activeEndDate:  new FormControl(new Date(), {validators: [Validators.required, DateTimeValidator]})
-    }, { updateOn: 'change' });
-   }
+    modalcomponent: NgbModal;
+    newAppointment: Appointment;
+    newEventForm: FormGroup;
 
+  ngOnInit() {
+    this.initForm();
+  }
 
-  modalClose(){
+  modalClose(): void{
       this.dismissAll()
   }
 
   modalSave(){
     
-    this.newAppointment = new Appointment();
+    //this.newAppointment = new Appointment();
   } 
- }
 
- export const DateTimeValidator = (fc: FormControl) => {
-  const date = new Date(fc.value);
-  const isValid = !isNaN(date.valueOf());
-  return isValid ? null : {
-      isValid: {
-          valid: false
-      }
-  };
-};
+  initForm(){
+     this.newEventForm = new FormGroup({
+      startDateTime: new FormControl(),
+      endDateTime: new FormControl(),
+      employee:new FormControl(),
+      customer:new FormControl()
+    }) ;
+  }
+
+  newEvent(e):void{
+    console.log(this.newEventForm)
+    console.log("hier")
+  }
+ }
