@@ -14,7 +14,11 @@ export class MailService {
 
   constructor(private httpClient: HttpClient) { }
 
-  
+  /**
+   * sends an email to the recipients
+   * @param message with all the info of the mail
+   * @returns ...
+   */
   sendMail(message: MailMessage): Observable<any> {
     return this.httpClient.post<any>(this.url + 'api/v1/emails', message.mappedTo(), {
       headers: this.basicHeaders,

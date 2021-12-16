@@ -18,11 +18,12 @@ export class FaceService {
 
   constructor(private httpClient: HttpClient) { }
 
+  //todo: deze doorlopen
   /**
-   * 
-   * @param person 
-   * @param headers 
-   * @returns 
+   * creates a new largepersongroup
+   * @param person the person of the group
+   * @param headers null
+   * @returns largepersongroup 
    */
   createLargePersonGroupPerson(person: Person, headers: HttpHeaders = null): Observable<any> {
     let usingHeaders = this.basicHeaders;
@@ -40,8 +41,8 @@ export class FaceService {
   }
 
   /**
-   * 
-   * @param file 
+   * detect a new face
+   * @param file the file to use for face detection
    * @param headers 
    * @returns 
    */
@@ -59,8 +60,8 @@ export class FaceService {
   }
 
   /**
-   * 
-   * @returns 
+   * train new face
+   * @returns largepersongroup
    */
   trainFace(): Observable<any> {
     return this.httpClient.post<any>(this.url + 'api/v1/facerecognition/largepersongroups/' + this.groupId +
@@ -72,11 +73,11 @@ export class FaceService {
   }
 
   /**
-   * 
-   * @param personFaceId 
-   * @param files 
-   * @param faceRectangle 
-   * @param headers 
+   * add na new face to a largepersongroup
+   * @param personFaceId of id of the persons face
+   * @param files to add to the largepersongroup
+   * @param faceRectangle ...
+   * @param headers null
    * @returns 
    */
   addFace(personFaceId: string, files: any, faceRectangle: FaceRectangle, headers: HttpHeaders = null):
@@ -95,9 +96,9 @@ export class FaceService {
   }
 
   /**
-   * 
-   * @param personFaceIds 
-   * @returns 
+   * recognize the person with their faceid
+   * @param personFaceIds the persons faceid
+   * @returns the identification
    */
   recognize(personFaceIds: string[]): Observable<any> {
     return this.httpClient.post<any>(this.url + 'api/v1/facerecognition/identify',

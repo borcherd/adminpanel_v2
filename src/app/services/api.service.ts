@@ -14,6 +14,10 @@ export class ApiService {
 
   constructor(private httpClient: HttpClient) { }
 
+  /**
+   * gets all packages from the database
+   * @returns an array of packages
+   */
   getAllPackages(): Observable<Package[]> {
     return this.httpClient.get<Package[]>(this.url + 'api/v1/packages', {
       headers: this.basicHeaders,

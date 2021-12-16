@@ -18,6 +18,10 @@ export class PersonService {
 
   constructor(private httpClient: HttpClient) { }
 
+  /**
+   * gets all persons from the database
+   * @returns an array of persons
+   */
   getAllPersons(): Observable<Person[]> {
     return this.httpClient.get<Person[]>(this.url + 'api/v1/persons', {
       headers: this.basicHeaders,
@@ -35,7 +39,11 @@ export class PersonService {
   }
 
 
-  
+  /**
+   * gets all persons of a certain role 
+   * @param role of the person (employee, customer, admin)
+   * @returns an array of persons
+   */
   getAllPersonsByRole(role: String): Observable<Person[]> {
     return this.httpClient.get<Person[]>(this.url + 'api/v1/persons/role/' + role, {
       headers: this.basicHeaders,
@@ -52,7 +60,12 @@ export class PersonService {
       }));
   }
 
-  
+  /**
+   * gets the person with the corresponding id
+   * @param id of the person
+   * @param headers null
+   * @returns the person with the correstponding id
+   */
   getPersonById(id: number, headers: HttpHeaders = null): Observable<Person> {
     let usingHeaders = this.basicHeaders;
 
@@ -73,6 +86,11 @@ export class PersonService {
     );
   }
 
+  /**
+   * gets persons with the corresponding ids
+   * @param ids of the persons  
+   * @returns an array of persons
+   */
   getPersonsByIds(ids: IdWrapper[]): Observable<Person[]> {
     console.log(ids.map((id: IdWrapper) => id.mappedTo()));
     return this.httpClient.post<Person[]>(this.url + 'api/v1/persons/ids', ids.map((id: IdWrapper) => id.mappedTo())
@@ -83,6 +101,11 @@ export class PersonService {
       });
   }
 
+  /**
+   * gets the profilepicture of a person
+   * @param id of the person
+   * @returns the profile picture
+   */
   getPersonProfilePicture(id: number): Observable<ProfilePicture> {
     return this.httpClient.get<ProfilePicture>(this.url + 'api/v1/persons/' + id + '/photo',
       {
@@ -92,6 +115,11 @@ export class PersonService {
       });
   }
 
+  /**
+   * gets the person by their email
+   * @param email of the person
+   * @returns a person
+   */
   getPersonByEmail(email: string): Observable<Person> {
     return this.httpClient.post<Person>(this.url + 'api/v1/persons/email/', { email: email }
     , {
@@ -101,6 +129,13 @@ export class PersonService {
       });
   }
 
+  /**
+   * updates the data of the person
+   * @param id of the person
+   * @param person the updated data of the person
+   * @param headers null  
+   * @returns the updated person
+   */
   updatePerson(id: number, person: Person, headers: HttpHeaders = null): Observable<Person> {
     let usingHeaders = this.basicHeaders;
 
@@ -115,6 +150,10 @@ export class PersonService {
       });
   }
 
+  /**
+   * gets the total count of employees
+   * @returns the count of employees
+   */
   getAllEmployeeCount(): Observable<any> {
     return this.httpClient.get<any>(this.url + 'api/v1/persons/count/global/employees', {
       headers: this.basicHeaders,
@@ -123,7 +162,11 @@ export class PersonService {
     });
   }
 
-  
+  /**
+   * creates a new instance of person 
+   * @param person the data of the new instance
+   * @returns the newly created person
+   */
   createPerson(person: Person): Observable<Person> {
     return this.httpClient.post<Person>(this.url + 'api/v1/persons', person.mappedTo()
       , {
@@ -133,6 +176,11 @@ export class PersonService {
       });
   }
 
+  /**
+   * delete the person with the corresponding id
+   * @param id of the person to delete
+   * @returns the deleted person
+   */
   deletePerson(id: number): Observable<Person> {
     return this.httpClient.delete<any>(this.url + 'api/v1/persons/' + id
       , {
@@ -142,7 +190,11 @@ export class PersonService {
       });
   }
 
-  
+  /**
+   * gets the person by their faceid
+   * @param id the faceid of the person
+   * @returns the corresponding person
+   */
   getPersonByPersonFaceId(id: string): Observable<Person> {
     return this.httpClient.get<Person>(this.url + 'api/v1/persons/personfaceid/' + id,
       {
@@ -160,6 +212,10 @@ export class PersonService {
       }));
   }
 
+  /**
+   * gets the current user
+   * @returns the current user
+   */
   getCurrentUser(): Observable<Person> {
     return this.httpClient.get<Person>(this.url + 'api/v1/persons/me', {
       headers: this.basicHeaders,
