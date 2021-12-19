@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FullCalendarModule } from '@fullcalendar/angular'; // for FullCalendar!
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -21,7 +21,6 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
 import { DateTimePickerComponent } from '../../customComponents/date-time-picker/date-time-picker.component';
-import { ReactiveFormsModule } from '@angular/forms';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -59,6 +58,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     FormsModule,
+    ReactiveFormsModule,
     FullCalendarModule, // import the FullCalendar module! will make the FullCalendar component available
     PerfectScrollbarModule,
     NgbDropdownModule,

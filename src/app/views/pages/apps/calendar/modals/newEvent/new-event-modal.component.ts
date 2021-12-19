@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Appointment } from 'src/app/models/appointment';
 
 
 @Component({
@@ -9,36 +8,45 @@ import { Appointment } from 'src/app/models/appointment';
   templateUrl: './new-event-modal.component.html'
 })
 
-export class newEventModalComponent  extends NgbModal implements OnInit{
+export class newEventModalComponent extends NgbModal implements OnInit{
 
     modalcomponent: NgbModal;
-    newAppointment: Appointment;
-    newEventForm: FormGroup;
+    form: FormGroup;
 
   ngOnInit() {
     this.initForm();
   }
 
   modalClose(): void{
-      this.dismissAll()
+    this.dismissAll();
   }
 
-  modalSave(){
-    
-    //this.newAppointment = new Appointment();
-  } 
-
   initForm(){
-     this.newEventForm = new FormGroup({
-      startDateTime: new FormControl(),
-      endDateTime: new FormControl(),
-      employee:new FormControl(),
-      customer:new FormControl()
+     this.form = new FormGroup({
+      startDateTime: new FormControl,
+      endDateTime: new FormControl,
+      description:new FormControl,
+      customer:new FormControl
     }) ;
   }
 
-  newEvent(e):void{
-    console.log(this.newEventForm)
-    console.log("hier")
+  newEvent(form):void{
+    console.log(form);
+  }
+
+  get startDateTime() {
+    return this.form.get('startDateTime') as FormControl;
+  }
+
+  get endDateTime() {
+    return this.form.get('endDateTime') as FormControl;
+  }
+
+  get description() {
+    return this.form.get('description') as FormControl;
+  }
+
+  get customer() {
+    return this.form.get('customer') as FormControl;
   }
  }
