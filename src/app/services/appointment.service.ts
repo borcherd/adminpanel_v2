@@ -4,15 +4,13 @@ import { Observable } from 'rxjs';
 import { Appointment } from '../models/appointment';
 import { map } from 'rxjs/operators';
 import { AppointmentCount } from '../models/appointmentCount';
+import { basicHeaders, url } from './constants';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentService {
-  private url = 'http://localhost/';
-  //private url = 'https://api.accretion.be/';
-  private basicHeaders = new HttpHeaders({});
 
   constructor(private httpClient: HttpClient) { }
 
@@ -21,8 +19,8 @@ export class AppointmentService {
    * @returns an array of appointments
    */
   getAllAppointments(): Observable<Appointment[]> {
-    return this.httpClient.get<Appointment[]>(this.url + 'api/v1/appointments', {
-      headers: this.basicHeaders,
+    return this.httpClient.get<Appointment[]>(url + 'api/v1/appointments', {
+      headers: basicHeaders,
       withCredentials: true
 
     }).pipe(
@@ -45,9 +43,9 @@ export class AppointmentService {
    * @returns an array of appointments
    */
   getAppointmentsByDate(year, month, day): Observable<Appointment[]> {
-    return this.httpClient.get<Appointment[]>(this.url + 'api/v1/appointments' + '/date/' + year + '/'
+    return this.httpClient.get<Appointment[]>(url + 'api/v1/appointments' + '/date/' + year + '/'
       + month + '/' + day, {
-      headers: this.basicHeaders,
+      headers: basicHeaders,
       withCredentials: true
 
     }).pipe(
@@ -68,8 +66,8 @@ export class AppointmentService {
    * @returns one appointment
    */
   getAppointmentById(id: number): Observable<Appointment> {
-    return this.httpClient.get<Appointment>(this.url + 'api/v1/appointments/' + id, {
-      headers: this.basicHeaders,
+    return this.httpClient.get<Appointment>(url + 'api/v1/appointments/' + id, {
+      headers: basicHeaders,
       withCredentials: true
 
     });
@@ -82,9 +80,9 @@ export class AppointmentService {
    * @returns an array of appointments within the range
    */
   getAppointmentsDayCountByDateRange(startDate: string, endDate: string): Observable<AppointmentCount[]> {
-    return this.httpClient.get<AppointmentCount[]>(this.url + 'api/v1/appointments/count/day/start/' + startDate + '/end/'
+    return this.httpClient.get<AppointmentCount[]>(url + 'api/v1/appointments/count/day/start/' + startDate + '/end/'
       + endDate, {
-      headers: this.basicHeaders,
+      headers: basicHeaders,
       withCredentials: true
 
     }).pipe(
@@ -106,9 +104,9 @@ export class AppointmentService {
    * @returns an array of appointments within the range
    */
   getAppointmentsMonthCountByDateRange(startDate: string, endDate: string): Observable<AppointmentCount[]> {
-    return this.httpClient.get<AppointmentCount[]>(this.url + 'api/v1/appointments/count/month/start/' + startDate + '/end/'
+    return this.httpClient.get<AppointmentCount[]>(url + 'api/v1/appointments/count/month/start/' + startDate + '/end/'
       + endDate, {
-      headers: this.basicHeaders,
+      headers: basicHeaders,
       withCredentials: true
 
     }).pipe(
@@ -130,9 +128,9 @@ export class AppointmentService {
    * @returns the updated appointment
    */
   updateAppointment(id: number, appointment: Appointment): Observable<Appointment> {
-    return this.httpClient.put<Appointment>(this.url + 'api/v1/appointments/' + id, appointment.mappedTo()
+    return this.httpClient.put<Appointment>(url + 'api/v1/appointments/' + id, appointment.mappedTo()
       , {
-        headers: this.basicHeaders,
+        headers: basicHeaders,
         withCredentials: true
 
       });
@@ -144,9 +142,9 @@ export class AppointmentService {
    * @returns the created appointment 
    */
   createAppointment(appointment: Appointment): Observable<Appointment> {
-    return this.httpClient.post<Appointment>(this.url + 'api/v1/appointments', appointment.mappedTo()
+    return this.httpClient.post<Appointment>(url + 'api/v1/appointments', appointment.mappedTo()
       , {
-        headers: this.basicHeaders,
+        headers: basicHeaders,
         withCredentials: true
 
       }).pipe(map((value: any) => {
@@ -158,9 +156,9 @@ export class AppointmentService {
   }
 
   deleteAppointment(id: number): Observable<Appointment> {
-    return this.httpClient.delete<any>(this.url + 'api/v1/appointments/' + id
+    return this.httpClient.delete<any>(url + 'api/v1/appointments/' + id
       , {
-        headers: this.basicHeaders,
+        headers: basicHeaders,
         withCredentials: true
 
       });

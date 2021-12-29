@@ -6,15 +6,13 @@ import { Appointment } from '../models/appointment';
 import { IdWrapper } from '../models/idWrapper';
 import { Person } from '../models/person';
 import { ProfilePicture } from '../models/profilePicture';
+import { basicHeaders, url } from './constants';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonService {
-
-  private url = 'http://localhost/';
-  //private url = 'https://api.accretion.be/';
-  private basicHeaders = new HttpHeaders({});
 
   constructor(private httpClient: HttpClient) { }
 
@@ -23,8 +21,8 @@ export class PersonService {
    * @returns an array of persons
    */
   getAllPersons(): Observable<Person[]> {
-    return this.httpClient.get<Person[]>(this.url + 'api/v1/persons', {
-      headers: this.basicHeaders,
+    return this.httpClient.get<Person[]>(url + 'api/v1/persons', {
+      headers: basicHeaders,
       withCredentials: true
     }).pipe(
     map((values: any[]) => {
@@ -45,8 +43,8 @@ export class PersonService {
    * @returns an array of persons
    */
   getAllPersonsByRole(role: String): Observable<Person[]> {
-    return this.httpClient.get<Person[]>(this.url + 'api/v1/persons/role/' + role, {
-      headers: this.basicHeaders,
+    return this.httpClient.get<Person[]>(url + 'api/v1/persons/role/' + role, {
+      headers: basicHeaders,
       withCredentials: true,
     }).pipe(
       map((values: any[]) => {
@@ -67,13 +65,13 @@ export class PersonService {
    * @returns the person with the correstponding id
    */
   getPersonById(id: number, headers: HttpHeaders = null): Observable<Person> {
-    let usingHeaders = this.basicHeaders;
+    let usingHeaders = basicHeaders;
 
     if (headers !=  null) {
       usingHeaders = headers;
     }
 
-    return this.httpClient.get<Person>(this.url + 'api/v1/persons/' + id, {
+    return this.httpClient.get<Person>(url + 'api/v1/persons/' + id, {
       headers: usingHeaders,
       withCredentials: true
 
@@ -93,9 +91,9 @@ export class PersonService {
    */
   getPersonsByIds(ids: IdWrapper[]): Observable<Person[]> {
     console.log(ids.map((id: IdWrapper) => id.mappedTo()));
-    return this.httpClient.post<Person[]>(this.url + 'api/v1/persons/ids', ids.map((id: IdWrapper) => id.mappedTo())
+    return this.httpClient.post<Person[]>(url + 'api/v1/persons/ids', ids.map((id: IdWrapper) => id.mappedTo())
       , {
-        headers: this.basicHeaders,
+        headers: basicHeaders,
         withCredentials: true
 
       });
@@ -107,9 +105,9 @@ export class PersonService {
    * @returns the profile picture
    */
   getPersonProfilePicture(id: number): Observable<ProfilePicture> {
-    return this.httpClient.get<ProfilePicture>(this.url + 'api/v1/persons/' + id + '/photo',
+    return this.httpClient.get<ProfilePicture>(url + 'api/v1/persons/' + id + '/photo',
       {
-        headers: this.basicHeaders,
+        headers: basicHeaders,
         withCredentials: true
 
       });
@@ -121,9 +119,9 @@ export class PersonService {
    * @returns a person
    */
   getPersonByEmail(email: string): Observable<Person> {
-    return this.httpClient.post<Person>(this.url + 'api/v1/persons/email/', { email: email }
+    return this.httpClient.post<Person>(url + 'api/v1/persons/email/', { email: email }
     , {
-        headers: this.basicHeaders,
+        headers: basicHeaders,
         withCredentials: true
 
       });
@@ -137,12 +135,12 @@ export class PersonService {
    * @returns the updated person
    */
   updatePerson(id: number, person: Person, headers: HttpHeaders = null): Observable<Person> {
-    let usingHeaders = this.basicHeaders;
+    let usingHeaders = basicHeaders;
 
     if (headers !=  null) {
       usingHeaders = headers;
     }
-    return this.httpClient.put<Person>(this.url + 'api/v1/persons/' + id, person.mappedTo()
+    return this.httpClient.put<Person>(url + 'api/v1/persons/' + id, person.mappedTo()
       , {
         headers: usingHeaders,
         withCredentials: true,
@@ -155,8 +153,8 @@ export class PersonService {
    * @returns the count of employees
    */
   getAllEmployeeCount(): Observable<any> {
-    return this.httpClient.get<any>(this.url + 'api/v1/persons/count/global/employees', {
-      headers: this.basicHeaders,
+    return this.httpClient.get<any>(url + 'api/v1/persons/count/global/employees', {
+      headers: basicHeaders,
       withCredentials: true
 
     });
@@ -168,9 +166,9 @@ export class PersonService {
    * @returns the newly created person
    */
   createPerson(person: Person): Observable<Person> {
-    return this.httpClient.post<Person>(this.url + 'api/v1/persons', person.mappedTo()
+    return this.httpClient.post<Person>(url + 'api/v1/persons', person.mappedTo()
       , {
-        headers: this.basicHeaders,
+        headers: basicHeaders,
         withCredentials: true
 
       });
@@ -182,9 +180,9 @@ export class PersonService {
    * @returns the deleted person
    */
   deletePerson(id: number): Observable<Person> {
-    return this.httpClient.delete<any>(this.url + 'api/v1/persons/' + id
+    return this.httpClient.delete<any>(url + 'api/v1/persons/' + id
       , {
-        headers: this.basicHeaders,
+        headers: basicHeaders,
         withCredentials: true
 
       });
@@ -196,9 +194,9 @@ export class PersonService {
    * @returns the corresponding person
    */
   getPersonByPersonFaceId(id: string): Observable<Person> {
-    return this.httpClient.get<Person>(this.url + 'api/v1/persons/personfaceid/' + id,
+    return this.httpClient.get<Person>(url + 'api/v1/persons/personfaceid/' + id,
       {
-        headers: this.basicHeaders,
+        headers: basicHeaders,
         withCredentials: true
 
       }).pipe(map((value: any) => {
@@ -217,8 +215,8 @@ export class PersonService {
    * @returns the current user
    */
   getCurrentUser(): Observable<Person> {
-    return this.httpClient.get<Person>(this.url + 'api/v1/persons/me', {
-      headers: this.basicHeaders,
+    return this.httpClient.get<Person>(url + 'api/v1/persons/me', {
+      headers: basicHeaders,
       withCredentials: true
 
     })

@@ -1,15 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { basicHeaders, url } from './constants';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-
-  private url = 'http://localhost/';
-  //private url = 'https://api.accretion.be/';
-  private basicHeaders = new HttpHeaders({});
 
   constructor(private httpClient: HttpClient) { }
 
@@ -21,7 +19,7 @@ export class AuthenticationService {
    */
   authenticate(): Observable<string> {
 
-    return this.httpClient.get<string>(this.url + 'login');
+    return this.httpClient.get<string>(url + 'login');
   }
 
   /**
@@ -31,7 +29,7 @@ export class AuthenticationService {
    */
   isInvitationValid(invitationToken: string): Observable<any> {
     const header = new HttpHeaders({'Authorization': invitationToken});
-    return this.httpClient.get<any>(this.url + 'token', {headers : header});
+    return this.httpClient.get<any>(url + 'token', {headers : header});
   }
 
   /**
@@ -39,8 +37,8 @@ export class AuthenticationService {
    * @returns token
    */
   isLoggedIn(): Observable<any> {
-    return this.httpClient.get<any>(this.url + 'token/loggedin', {
-      headers : this.basicHeaders,
+    return this.httpClient.get<any>(url + 'token/loggedin', {
+      headers : basicHeaders,
       withCredentials: true,
     });
   }
@@ -50,8 +48,8 @@ export class AuthenticationService {
    * @returns logout 
    */
   logout(): Observable<any> {
-    return this.httpClient.get<any>(this.url + 'logout', {
-      headers : this.basicHeaders,
+    return this.httpClient.get<any>(url + 'logout', {
+      headers : basicHeaders,
       withCredentials: true,
     });
   }

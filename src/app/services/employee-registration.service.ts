@@ -3,15 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EmployeeRegistration } from '../models/employeeRegistration';
+import { basicHeaders, url } from './constants';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeRegistrationService {
-
-  private url = 'http://localhost/';
-  //private url = 'https://api.accretion.be/';
-  private basicHeaders = new HttpHeaders({});
 
   constructor(private httpClient: HttpClient) { }
 
@@ -24,9 +22,9 @@ export class EmployeeRegistrationService {
    * @returns the registration of the employee
    */
   getEmployeeRegistrationByDateAndEmployeeId(employeeId, year, month, day): Observable<EmployeeRegistration> {
-    return this.httpClient.get<EmployeeRegistration>(this.url + 'api/v1/employeeregistrations/' + employeeId
+    return this.httpClient.get<EmployeeRegistration>(url + 'api/v1/employeeregistrations/' + employeeId
       + '/date/' + year + '/' + month + '/' + day, {
-      headers: this.basicHeaders,
+      headers: basicHeaders,
       withCredentials: true
 
     });
@@ -40,8 +38,8 @@ export class EmployeeRegistrationService {
    * @returns the registration of the employee
    */
   getEmployeeRegistrationByDate(year, month, day): Observable<EmployeeRegistration[]> {
-    return this.httpClient.get<EmployeeRegistration[]>(this.url + 'api/v1/employeeregistrations' + '/date/' + year + '/'
-      + month + '/' + day, {headers: this.basicHeaders, withCredentials: true}).pipe(
+    return this.httpClient.get<EmployeeRegistration[]>(url + 'api/v1/employeeregistrations' + '/date/' + year + '/'
+      + month + '/' + day, {headers: basicHeaders, withCredentials: true}).pipe(
       map((values: any[]) => {
         const registrations = [];
         values.forEach(value => {
@@ -58,9 +56,9 @@ export class EmployeeRegistrationService {
    * @returns the registrationcount
    */
   getEmployeeRegistrationCountToday(): Observable<any> {
-    return this.httpClient.get<any>(this.url + 'api/v1/employeeregistrations' + '/count' + '/global/'
+    return this.httpClient.get<any>(url + 'api/v1/employeeregistrations' + '/count' + '/global/'
       + 'today', {
-      headers: this.basicHeaders,
+      headers: basicHeaders,
       withCredentials: true
 
     });
@@ -74,9 +72,9 @@ export class EmployeeRegistrationService {
  */  
   createEmployeeRegistration(employeeRegistration: EmployeeRegistration, employeeId: number):
     Observable<EmployeeRegistration> {
-    return this.httpClient.post<EmployeeRegistration>(this.url + 'api/v1/employeeregistrations/employee/' +
+    return this.httpClient.post<EmployeeRegistration>(url + 'api/v1/employeeregistrations/employee/' +
       employeeId, employeeRegistration.mappedTo(), {
-      headers: this.basicHeaders,
+      headers: basicHeaders,
       withCredentials: true
 
     });
@@ -90,9 +88,9 @@ export class EmployeeRegistrationService {
    * @returns the log of the registration
    */
   logOfEmployeeRegisgtration(id: number, registration: EmployeeRegistration) {
-    return this.httpClient.put(this.url + 'api/v1/employeeregistrations/' + id, registration
+    return this.httpClient.put(url + 'api/v1/employeeregistrations/' + id, registration
       , {
-        headers: this.basicHeaders,
+        headers: basicHeaders,
         withCredentials: true
 
       });
