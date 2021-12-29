@@ -1,16 +1,79 @@
-<nav class="page-breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a routerLink=".">Tables</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Data table</li>
-  </ol>
-</nav>
-
 <div class="row">
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Simple-datatables</h4>
-        <p class="card-description mb-0">Read the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank"> Official Simple-datatables Documentation </a>for a full list of instructions and other options.</p>
+        <h4 class="card-title">werknemer/Klant registreren</h4>
+        <div class="row">
+          <div class="col-sm-12 ">
+            <form class="forms-sample" [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <label for="Naam">Naam*</label>
+                <input type="text" class="form-control" formControlName="Naam" placeholder="Naam" >
+                <div *ngIf="form.controls['Naam'].invalid && (form.controls['Naam'].dirty || form.controls['Naam'].touched)" class="alert alert-danger">
+                  <div *ngIf="form.controls['Naam'].errors.required">
+                    Naam is vereist.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Voornaam">Voornaam*</label>
+                <input type="text" class="form-control" formControlName="Voornaam" placeholder="Voornaam">
+                <div *ngIf="form.controls['Voornaam'].invalid && (form.controls['Voornaam'].dirty || form.controls['Voornaam'].touched)" class="alert alert-danger">
+                  <div *ngIf="form.controls['Voornaam'].errors.required">
+                    Voornaam is vereist.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Email">Email*</label>
+                <input type="email" class="form-control" formControlName="Email" id="Email" autocomplete="off" placeholder="Email">
+                <div *ngIf="form.controls['Email'].invalid && (form.controls['Email'].dirty || form.controls['Email'].touched)" class="alert alert-danger">
+                  <div *ngIf="form.controls['Email'].errors.required">
+                    Email is vereist.
+                  </div>
+                  <div *ngIf="form.controls['Email'].errors.pattern">Het emailadres moet een correct formaat hebben</div>
+
+                </div>
+              </div> 
+              <div class="form-group">
+                <label for="gsmNummer">Gsm-nummer*</label>
+                <input type="text" class="form-control" formControlName="GsmNummer" id="GsmNummer" autocomplete="off" placeholder="Gsm-nummer">
+                <div *ngIf="form.controls['GsmNummer'].invalid && (form.controls['GsmNummer'].dirty || form.controls['GsmNummer'].touched)" class="alert alert-danger">
+                  <div *ngIf="form.controls['GsmNummer'].errors.required">
+                    Gsm-nummer is vereist.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nummer">Rol*</label>
+                <select class="form-control" formControlName="Rol" id="Rol">
+                  <option selected disabled>Selecteer rol</option>
+                  <option>Werknemer</option>
+                  <option>Klant</option>
+                  <option>Administrator</option>            
+                </select>
+                <div *ngIf="form.controls['Rol'].invalid && (form.controls['Rol'].dirty || form.controls['Rol'].touched)" class="alert alert-danger">
+                  <div *ngIf="form.controls['Rol'].errors.required">
+                    Rol is vereist.
+                  </div>
+
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Upload profielfoto</label>
+                <input (change)="handleFileInput($event)" type="file" name="img[]" class="file-upload-default" id="fileUploadInputExample">
+                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                  <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload afbeelding">
+                  <span class="input-group-append">
+                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                  </span>
+                </div>
+              </div> 
+              <button type="submit" [disabled]="form.invalid" class="btn btn-primary mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>

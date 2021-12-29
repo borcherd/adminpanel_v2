@@ -6,6 +6,8 @@ import { TablesComponent } from './tables.component';
 import { DataTableComponent } from './data-table/data-table.component';
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CustomFormsModule } from 'ngx-custom-validators';
 
 const routes: Routes = [
   {
@@ -30,7 +32,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    NgxDatatableModule
+    NgxDatatableModule,
+    ReactiveFormsModule,
+    FormsModule, CustomFormsModule
   ]
 })
 export class TablesModule { }
