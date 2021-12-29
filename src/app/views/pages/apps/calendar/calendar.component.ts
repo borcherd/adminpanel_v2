@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
-import { Draggable } from '@fullcalendar/interaction'; // for dateClick
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
-import { editEventModalComponent } from './modals/editEvent/edit-event-modal.component';
-import { newEventModalComponent } from './modals/newEvent/new-event-modal.component';
+import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-event-modal.component';
+import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
 
 
 @Component({
