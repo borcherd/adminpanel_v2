@@ -7,15 +7,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './edit-event-modal.component.html'
 })
 
- export class editEventModalComponent extends NgbModal{
-     modalcomponent: NgbModal;
-     
+ export class editEventModalComponent extends NgbModal implements OnInit{
+  modalcomponent: NgbModal;
 
-  modalClose(){
-      this.dismissAll()
+  ngOnInit() {
   }
 
-  modalSave(){
-    
-  } 
+  /**
+   * closes the modal
+   */
+  modalClose(){
+    this.dismissAll();
+  }
+
  }

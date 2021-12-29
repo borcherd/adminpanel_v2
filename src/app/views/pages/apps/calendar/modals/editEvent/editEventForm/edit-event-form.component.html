@@ -1,0 +1,31 @@
+
+<form class="forms-sample" [formGroup]="formEvent" (ngSubmit)="newEvent()">
+    <div class="form-group">
+        <label for="exampleInputStart">Start datum en tijd</label>
+        <input type="text" class="form-control" placeholder="datetime" formControlName="startDateTime">
+        <div *ngIf="formEvent.controls['startDateTime'].invalid && (formEvent.controls['startDateTime'].dirty || formEvent.controls['startDateTime'].touched)" class="alert alert-danger">
+            <div *ngIf="formEvent.controls['startDateTime'].errors.required">
+                Dit veld is vereist
+            </div>
+        </div>    
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEnd">Eind datum en tijd</label>
+        <input type="text" class="form-control" placeholder="datetime" formControlName="endDateTime">
+        <div *ngIf="formEvent.controls['endDateTime'].invalid && (formEvent.controls['endDateTime'].dirty || formEvent.controls['endDateTime'].touched)" class="alert alert-danger">
+            <div *ngIf="formEvent.controls['endDateTime'].errors.required">
+                Dit veld is vereist
+            </div>
+        </div> 
+    </div>
+    <div class="form-group">
+        <label for="exampleInputDescription">Beschrijving</label>
+        <input type="text" class="form-control"autocomplete="off" placeholder="Description" formControlName="description">
+        <div *ngIf="formEvent.controls['description'].invalid && (formEvent.controls['description'].dirty || formEvent.controls['description'].touched)" class="alert alert-danger">
+            <div *ngIf="formEvent.controls['description'].errors.required">
+                Dit veld is vereist
+            </div>
+        </div> 
+    </div>
+    <button type="submit" class="btn btn-primary mr-2" [disabled]="formEvent.invalid" >Submit</button>
+</form>
