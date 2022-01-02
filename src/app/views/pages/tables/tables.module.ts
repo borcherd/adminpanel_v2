@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
 import { TablesComponent } from './tables.component';
-import { DataTableComponent } from './data-table/data-table.component';
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormsModule } from 'ngx-custom-validators';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 
 const routes: Routes = [
   {
@@ -16,19 +16,19 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'data-table',
+        redirectTo: 'admin-panel',
         pathMatch: 'full'
       },
       {
-        path: 'data-table',
-        component: DataTableComponent
-      },
+        path:'admin-panel',
+        component: AdminPanelComponent
+      }
     ]
   }
 ]
 
 @NgModule({
-  declarations: [TablesComponent, DataTableComponent],
+  declarations: [TablesComponent, AdminPanelComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

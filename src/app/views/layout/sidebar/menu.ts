@@ -18,6 +18,6 @@ export const MENU: MenuItem[] = [
   {
     label: 'Table',
     icon: 'layout',
-    link: '/tables/data-table'
+    link: '/tables/admin-panel'
   },
 ];

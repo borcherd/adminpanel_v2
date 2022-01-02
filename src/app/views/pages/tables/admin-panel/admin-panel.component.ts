@@ -1,15 +1,17 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
+import { Person } from 'src/app/models/person';
+import { company } from 'src/app/views/constants';
 import { DataTable } from "simple-datatables";
 
+
 @Component({
-  selector: 'app-data-table',
-  templateUrl: './data-table.component.html',
-  styleUrls: ['./data-table.component.scss']
+  selector: 'app-admin-panel',
+  templateUrl: './admin-panel.component.html',
+  styleUrls: ['./admin-panel.component.scss']
 })
-export class DataTableComponent implements OnInit {
-  
+export class AdminPanelComponent implements OnInit {
+
   form: FormGroup;
 
   constructor() { 
@@ -48,6 +50,19 @@ export class DataTableComponent implements OnInit {
    */
   onSubmit(){
       console.log(this.form)
+      const person: Person = new Person(
+        this.form.value.role,
+        this.form.value.email,
+        this.form.value.firstName,
+        this.form.value.name,null,null);
+      if (this.form.value.role == '1'){
+        person.company = this.form.value.company;
+      } else {
+        person.company = company;
+      }
+      person.gsm = this.form.value.phoneNumber;
+      person.organization = company;
+      console.log(person)
   }
 
   /**
@@ -55,15 +70,18 @@ export class DataTableComponent implements OnInit {
    */
   initaliseForm(){
     this.form = new FormGroup({
-      Naam: new FormControl('',Validators.required),
-      Voornaam: new FormControl('',Validators.required),
-      Email: new FormControl('', Validators.compose([
+      name: new FormControl('',Validators.required),
+      firstName: new FormControl('',Validators.required),
+      email: new FormControl('', Validators.compose([
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
-      GsmNummer: new FormControl('',Validators.required),
-      Rol: new FormControl('',Validators.required)
-    });
+      phoneNumber: new FormControl('',Validators.required),
+      role: new FormControl('',Validators.required),
+      company: new FormControl('')
+    })
   }
+
+  
 }
 

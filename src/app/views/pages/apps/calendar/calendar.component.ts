@@ -20,7 +20,7 @@ export class CalendarComponent implements OnInit {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
-    initialView: 'dayGridMonth',
+    initialView: 'timeGridWeek',
     initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     editable: true,
@@ -52,7 +52,7 @@ export class CalendarComponent implements OnInit {
   handleDateSelect(selectInfo: DateSelectArg) {   
     console.log(selectInfo)
     console.log("handleDateSelect")
-    this.openModal(1)
+    this.openModal(1, selectInfo)
     
     /*const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
@@ -76,7 +76,7 @@ export class CalendarComponent implements OnInit {
    */
   handleEventClick(clickInfo: EventClickArg) {
     console.log("handleEventClick")
-    this.openModal(2)
+    this.openModal(2, clickInfo)
     
   }
 
@@ -94,14 +94,16 @@ export class CalendarComponent implements OnInit {
    * Function for opening modal according to the type
    * @param type type of modal (1 for new event, 2 for editing event)
    */
-  openModal(type):void{  
+  openModal(type, info):void{  
     
     switch (type) {
       case 1:
         const modalNewEvent = this.modalService.open(newEventModalComponent);
+        modalNewEvent.componentInstance.clickInfo = info;
         break;
       case 2:
         const modalEditEvent = this.modalService.open(editEventModalComponent);
+        modalEditEvent.componentInstance.clickInfo = info;
         break;
     }
   }

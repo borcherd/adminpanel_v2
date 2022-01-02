@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { DateSelectArg } from '@fullcalendar/angular';
 
 @Component({
   selector: 'app-new-event-form',
@@ -7,15 +8,20 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class NewEventFormComponent implements OnInit {
 
+    @Output() submitCloseEvent = new EventEmitter<number>();
+
     formEvent: FormGroup;
     formCustomer: FormGroup;
     newCustomerShown: boolean = false;
 
-    constructor(){
-    }
+    @Input()
+    clickInfoInput: DateSelectArg;
+
+    constructor(){}
 
   ngOnInit() {
     this.initForms();
+    console.log(this.clickInfoInput.startStr)
   }
 
   /**
@@ -23,16 +29,16 @@ export class NewEventFormComponent implements OnInit {
    */
   initForms(){
      this.formEvent = new FormGroup({
-      startDateTime: new FormControl('', Validators.required),
-      endDateTime: new FormControl('', Validators.required),
+      startDateTime: new FormControl(this.formatDateTime(this.clickInfoInput.startStr), Validators.required),
+      endDateTime: new FormControl(this.formatDateTime(this.clickInfoInput.endStr), Validators.required),
       description:new FormControl('', Validators.required),
-      customer:new FormControl('')
+      customer:new FormControl('', Validators.required)
     }) ;
     this.formCustomer = new FormGroup({
       email: new FormControl('', Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')),
-      naam: new FormControl(''),
-      voornaam: new FormControl(''),
-      bedrijf: new FormControl('')
+      name: new FormControl(''),
+      firstName: new FormControl(''),
+      company: new FormControl('')
     })
   }
 
@@ -42,6 +48,8 @@ export class NewEventFormComponent implements OnInit {
   newEvent(){
     console.log(this.formEvent);
     console.log(this.formCustomer);
+
+    //this.submitCloseEvent.emit(1)
   }
 
   /**
@@ -49,5 +57,28 @@ export class NewEventFormComponent implements OnInit {
    */
   toggleShow(){
     this.newCustomerShown = !this.newCustomerShown;
+    console.log(this.newCustomerShown)
+    if (!this.newCustomerShown){
+      console.log("false")
+      this.formEvent.controls['customer'].setValidators(Validators.required);
+      this.formEvent.updateValueAndValidity()
+      console.log(this.formEvent.controls.customer)
+    } else {
+      console.log("true")
+      this.formEvent.controls['customer'].clearValidators();
+      this.formEvent.updateValueAndValidity()
+      console.log(this.formEvent.controls.customer)
+    }
+  }
+
+  formatDateTime(dateTimeString:string){
+    const date = dateTimeString.substring(0,10)
+    const time= dateTimeString.substring(11,19)
+
+    return date + " " + time;
+  }
+
+  createEvent(){
+    
   }
 }

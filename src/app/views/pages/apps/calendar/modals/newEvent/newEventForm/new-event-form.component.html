@@ -1,7 +1,7 @@
 
 <form class="forms-sample" [formGroup]="formEvent" (ngSubmit)="newEvent()">
     <div class="form-group">
-        <label for="exampleInputStart">Start datum en tijd</label>
+        <label for="exampleInputStart">Start datum en tijd*</label>
         <input type="text" class="form-control" placeholder="datetime" formControlName="startDateTime">
         <div *ngIf="formEvent.controls['startDateTime'].invalid && (formEvent.controls['startDateTime'].dirty || formEvent.controls['startDateTime'].touched)" class="alert alert-danger">
             <div *ngIf="formEvent.controls['startDateTime'].errors.required">
@@ -10,7 +10,7 @@
         </div>    
     </div>
     <div class="form-group">
-        <label for="exampleInputEnd">Eind datum en tijd</label>
+        <label for="exampleInputEnd">Eind datum en tijd*</label>
         <input type="text" class="form-control" placeholder="datetime" formControlName="endDateTime">
         <div *ngIf="formEvent.controls['endDateTime'].invalid && (formEvent.controls['endDateTime'].dirty || formEvent.controls['endDateTime'].touched)" class="alert alert-danger">
             <div *ngIf="formEvent.controls['endDateTime'].errors.required">
@@ -19,7 +19,7 @@
         </div> 
     </div>
     <div class="form-group">
-        <label for="exampleInputDescription">Beschrijving</label>
+        <label for="exampleInputDescription">Beschrijving*</label>
         <input type="text" class="form-control"autocomplete="off" placeholder="Description" formControlName="description">
         <div *ngIf="formEvent.controls['description'].invalid && (formEvent.controls['description'].dirty || formEvent.controls['description'].touched)" class="alert alert-danger">
             <div *ngIf="formEvent.controls['description'].errors.required">
@@ -27,22 +27,34 @@
             </div>
         </div> 
     </div>
+    <div class="form-group">
+        <label for="customer">Klant</label>
+        <select class="form-control" formControlName="customer" id="customer">
+          <option selected disabled>Selecteer Klant</option>
+          <option>xxx</option>    
+        </select>
+        <div *ngIf="formEvent.controls['customer'].invalid && (formEvent.controls['customer'].dirty || formEvent.controls['customer'].touched)" class="alert alert-danger">
+          <div *ngIf="formEvent.controls['customer'].errors.required">
+            customer is vereist.
+          </div>
+        </div>
+    </div>
     <div class="form-check form-check-flat form-check-primary">
         <label class="form-check-label">
             <input type="checkbox" class="form-check-input" (click)="toggleShow()">
             <i class="input-frame"></i>
             Nieuwe klant? 
-        </label>
+        </label> 
     </div>
     <div *ngIf="newCustomerShown">
         <form [formGroup]="formCustomer">
             <div class="form-group">
                 <label for="Voornaam">Voornaam</label>
-                <input type="text" class="form-control" placeholder="datetime" formControlName="voornaam">
+                <input type="text" class="form-control" placeholder="voornaam" formControlName="firstName">
             </div>
             <div class="form-group">
                 <label for="Naam">Naam</label>
-                <input type="text" class="form-control" placeholder="datetime" formControlName="naam">
+                <input type="text" class="form-control" placeholder="datetime" formControlName="name">
             </div>
             <div class="form-group">
                 <label for="Email">Email</label>
@@ -50,9 +62,9 @@
             </div>
             <div class="form-group">
                 <label for="Bedrijf">Bedrijf</label>
-                <input type="text" class="form-control" placeholder="datetime" formControlName="bedrijf">
+                <input type="text" class="form-control" placeholder="datetime" formControlName="company">
             </div>
         </form>
     </div>
-    <button type="submit" class="btn btn-primary mr-2" [disabled]="formEvent.invalid" >Submit</button>
+    <button type="submit" class="btn btn-primary mr-2"  >Submit</button>
 </form>
