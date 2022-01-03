@@ -1,5 +1,5 @@
 
-<form class="forms-sample" [formGroup]="formEvent" (ngSubmit)="newEvent()">
+<form class="forms-sample" [formGroup]="formEvent" (ngSubmit)="onSubmit()">
     <div class="form-group">
         <label for="exampleInputStart">Start datum en tijd*</label>
         <input type="text" class="form-control" placeholder="datetime" formControlName="startDateTime">
@@ -27,44 +27,49 @@
             </div>
         </div> 
     </div>
-    <div class="form-group">
-        <label for="customer">Klant</label>
-        <select class="form-control" formControlName="customer" id="customer">
-          <option selected disabled>Selecteer Klant</option>
-          <option>xxx</option>    
-        </select>
-        <div *ngIf="formEvent.controls['customer'].invalid && (formEvent.controls['customer'].dirty || formEvent.controls['customer'].touched)" class="alert alert-danger">
-          <div *ngIf="formEvent.controls['customer'].errors.required">
-            customer is vereist.
-          </div>
-        </div>
-    </div>
     <div class="form-check form-check-flat form-check-primary">
         <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" (click)="toggleShow()">
+            <input type="checkbox" class="form-check-input" formControlName="new_customer">
             <i class="input-frame"></i>
             Nieuwe klant? 
         </label> 
     </div>
+    <div class="form-group" *ngIf="customer_list" >
+        <label for="customer">Klant</label>
+        <select class="form-control" formControlName="customer_list" >
+          <option selected disabled>Selecteer Klant</option>
+          <option>xxx</option>    
+        </select>
+        <div *ngIf="formEvent.controls['customer_list'].invalid && (formEvent.controls['customer_list'].dirty || formEvent.controls['customer_list'].touched)" class="alert alert-danger">
+          <div *ngIf="formEvent.controls['customer_list'].errors.required">
+            customer is vereist.
+          </div>
+        </div>
+    </div>
+    <div>
+
+    </div>
+    <div class="form-group" *ngIf="customer_firstName">
+        <label for="Voornaam">Voornaam</label>
+        <input type="text" class="form-control" placeholder="voornaam" formControlName="customer_firstName">
+    </div>
+    <div class="form-group" *ngIf="customer_name">
+        <label for="Naam">Naam</label>
+        <input type="text" class="form-control" placeholder="datetime" formControlName="customer_name">
+    </div>
+    <div class="form-group" *ngIf="customer_email" >
+        <label for="Email">Email</label>
+        <input type="email" class="form-control" placeholder="datetime" formControlName="customer_email">
+    </div>
+    <div class="form-group" *ngIf="customer_company">
+        <label for="Bedrijf">Bedrijf</label>
+        <input type="text" class="form-control" placeholder="datetime" formControlName="customer_company">
+    </div>
+
     <div *ngIf="newCustomerShown">
         <form [formGroup]="formCustomer">
-            <div class="form-group">
-                <label for="Voornaam">Voornaam</label>
-                <input type="text" class="form-control" placeholder="voornaam" formControlName="firstName">
-            </div>
-            <div class="form-group">
-                <label for="Naam">Naam</label>
-                <input type="text" class="form-control" placeholder="datetime" formControlName="name">
-            </div>
-            <div class="form-group">
-                <label for="Email">Email</label>
-                <input type="email" class="form-control" placeholder="datetime" formControlName="email">
-            </div>
-            <div class="form-group">
-                <label for="Bedrijf">Bedrijf</label>
-                <input type="text" class="form-control" placeholder="datetime" formControlName="company">
-            </div>
+            
         </form>
-    </div>
-    <button type="submit" class="btn btn-primary mr-2"  >Submit</button>
+    </div> <!-- [disabled]="formEvent.invalid" bij button als niet valid is, maar past niet aan na aanpassen checkbox-->
+    <button type="submit" class="btn btn-primary mr-2" >Submit</button>
 </form>
