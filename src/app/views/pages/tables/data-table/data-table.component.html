@@ -1,0 +1,339 @@
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">werknemer/Klant registreren</h4>
+        <div class="row">
+          <div class="col-sm-12 ">
+            <form class="forms-sample" [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <label for="Naam">Naam*</label>
+                <input type="text" class="form-control" formControlName="Naam" placeholder="Naam" >
+                <div *ngIf="form.controls['Naam'].invalid && (form.controls['Naam'].dirty || form.controls['Naam'].touched)" class="alert alert-danger">
+                  <div *ngIf="form.controls['Naam'].errors.required">
+                    Naam is vereist.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Voornaam">Voornaam*</label>
+                <input type="text" class="form-control" formControlName="Voornaam" placeholder="Voornaam">
+                <div *ngIf="form.controls['Voornaam'].invalid && (form.controls['Voornaam'].dirty || form.controls['Voornaam'].touched)" class="alert alert-danger">
+                  <div *ngIf="form.controls['Voornaam'].errors.required">
+                    Voornaam is vereist.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Email">Email*</label>
+                <input type="email" class="form-control" formControlName="Email" id="Email" autocomplete="off" placeholder="Email">
+                <div *ngIf="form.controls['Email'].invalid && (form.controls['Email'].dirty || form.controls['Email'].touched)" class="alert alert-danger">
+                  <div *ngIf="form.controls['Email'].errors.required">
+                    Email is vereist.
+                  </div>
+                  <div *ngIf="form.controls['Email'].errors.pattern">Het emailadres moet een correct formaat hebben</div>
+
+                </div>
+              </div> 
+              <div class="form-group">
+                <label for="gsmNummer">Gsm-nummer*</label>
+                <input type="text" class="form-control" formControlName="GsmNummer" id="GsmNummer" autocomplete="off" placeholder="Gsm-nummer">
+                <div *ngIf="form.controls['GsmNummer'].invalid && (form.controls['GsmNummer'].dirty || form.controls['GsmNummer'].touched)" class="alert alert-danger">
+                  <div *ngIf="form.controls['GsmNummer'].errors.required">
+                    Gsm-nummer is vereist.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nummer">Rol*</label>
+                <select class="form-control" formControlName="Rol" id="Rol">
+                  <option selected disabled>Selecteer rol</option>
+                  <option>Werknemer</option>
+                  <option>Klant</option>
+                  <option>Administrator</option>            
+                </select>
+                <div *ngIf="form.controls['Rol'].invalid && (form.controls['Rol'].dirty || form.controls['Rol'].touched)" class="alert alert-danger">
+                  <div *ngIf="form.controls['Rol'].errors.required">
+                    Rol is vereist.
+                  </div>
+
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Upload profielfoto</label>
+                <input (change)="handleFileInput($event)" type="file" name="img[]" class="file-upload-default" id="fileUploadInputExample">
+                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                  <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload afbeelding">
+                  <span class="input-group-append">
+                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                  </span>
+                </div>
+              </div> 
+              <button type="submit" [disabled]="form.invalid" class="btn btn-primary mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<<<<<<< Updated upstream:src/app/views/pages/tables/data-table/data-table.component.html
+</div>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Data Table</h6>
+        <div class="table-responsive">
+          <table id="dataTableExample" class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011/04/25</td>
+                <td>$320,800</td>
+              </tr>
+              <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>$170,750</td>
+              </tr>
+              <tr>
+                <td>Ashton Cox</td>
+                <td>Junior Technical Author</td>
+                <td>San Francisco</td>
+                <td>66</td>
+                <td>2009/01/12</td>
+                <td>$86,000</td>
+              </tr>
+              <tr>
+                <td>Cedric Kelly</td>
+                <td>Senior Javascript Developer</td>
+                <td>Edinburgh</td>
+                <td>22</td>
+                <td>2012/03/29</td>
+                <td>$433,060</td>
+              </tr>
+              <tr>
+                <td>Airi Satou</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>33</td>
+                <td>2008/11/28</td>
+                <td>$162,700</td>
+              </tr>
+              <tr>
+                <td>Brielle Williamson</td>
+                <td>Integration Specialist</td>
+                <td>New York</td>
+                <td>61</td>
+                <td>2012/12/02</td>
+                <td>$372,000</td>
+              </tr>
+              <tr>
+                <td>Herrod Chandler</td>
+                <td>Sales Assistant</td>
+                <td>San Francisco</td>
+                <td>59</td>
+                <td>2012/08/06</td>
+                <td>$137,500</td>
+              </tr>
+              <tr>
+                <td>Rhona Davidson</td>
+                <td>Integration Specialist</td>
+                <td>Tokyo</td>
+                <td>55</td>
+                <td>2010/10/14</td>
+                <td>$327,900</td>
+              </tr>
+              <tr>
+                <td>Colleen Hurst</td>
+                <td>Javascript Developer</td>
+                <td>San Francisco</td>
+                <td>39</td>
+                <td>2009/09/15</td>
+                <td>$205,500</td>
+              </tr>
+              <tr>
+                <td>Sonya Frost</td>
+                <td>Software Engineer</td>
+                <td>Edinburgh</td>
+                <td>23</td>
+                <td>2008/12/13</td>
+                <td>$103,600</td>
+              </tr>
+              <tr>
+                <td>Jena Gaines</td>
+                <td>Office Manager</td>
+                <td>London</td>
+                <td>30</td>
+                <td>2008/12/19</td>
+                <td>$90,560</td>
+              </tr>
+              <tr>
+                <td>Quinn Flynn</td>
+                <td>Support Lead</td>
+                <td>Edinburgh</td>
+                <td>22</td>
+                <td>2013/03/03</td>
+                <td>$342,000</td>
+              </tr>
+              <tr>
+                <td>Charde Marshall</td>
+                <td>Regional Director</td>
+                <td>San Francisco</td>
+                <td>36</td>
+                <td>2008/10/16</td>
+                <td>$470,600</td>
+              </tr>
+              <tr>
+                <td>Haley Kennedy</td>
+                <td>Senior Marketing Designer</td>
+                <td>London</td>
+                <td>43</td>
+                <td>2012/12/18</td>
+                <td>$313,500</td>
+              </tr>
+              <tr>
+            <td>Tatyana Fitzpatrick</td>
+                <td>Regional Director</td>
+                <td>London</td>
+                <td>19</td>
+                <td>2010/03/17</td>
+                <td>$385,750</td>
+              </tr>
+              <tr>
+                <td>Michael Silva</td>
+                <td>Marketing Designer</td>
+                <td>London</td>
+                <td>66</td>
+                <td>2012/11/27</td>
+                <td>$198,500</td>
+              </tr>
+              <tr>
+                <td>Paul Byrd</td>
+                <td>Chief Financial Officer (CFO)</td>
+                <td>New York</td>
+                <td>64</td>
+                <td>2010/06/09</td>
+                <td>$725,000</td>
+              </tr>
+              <tr>
+                <td>Gloria Little</td>
+                <td>Systems Administrator</td>
+                <td>New York</td>
+                <td>59</td>
+                <td>2009/04/10</td>
+                <td>$237,500</td>
+              </tr>
+              <tr>
+                <td>Bradley Greer</td>
+                <td>Software Engineer</td>
+                <td>London</td>
+                <td>41</td>
+                <td>2012/10/13</td>
+                <td>$132,000</td>
+              </tr>
+              <tr>
+                <td>Dai Rios</td>
+                <td>Personnel Lead</td>
+                <td>Edinburgh</td>
+                <td>35</td>
+                <td>2012/09/26</td>
+                <td>$217,500</td>
+              </tr>
+              <tr>
+                <td>Jenette Caldwell</td>
+                <td>Development Lead</td>
+                <td>New York</td>
+                <td>30</td>
+                <td>2011/09/03</td>
+                <td>$345,000</td>
+              </tr>
+              <tr>
+                <td>Yuri Berry</td>
+                <td>Chief Marketing Officer (CMO)</td>
+                <td>New York</td>
+                <td>40</td>
+                <td>2009/06/25</td>
+                <td>$675,000</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+=======
+  
+  <div class="row">
+    <div class="col-md-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Data Table</h6>
+          <div class="table-responsive">
+            <table dataTable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="dataTableExample" class="table">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Rol</th>
+                  <th>Voornqq;</th>
+                  <th>Achternaam</th>
+                  <th>Email</th>
+                  <th>GSM</th>
+                  <th>Bedrijf</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let person of persons">
+                  <td>{{ person.personId }}</td>
+                  <td>{{ person.role }}</td>
+                  <td>{{ person.firstName }}</td>
+                  <td>{{ person.lastName }}</td>
+                  <td>{{ person.email }}</td>
+                  <td>{{ person.gsm }}</td>
+                  <td>{{ person.company }}</td>
+                  <td><button (click)="onEditClicked(person)" nbButton [size]="small">Wijzig</button></td>
+                  <td><button (click)="openDeleteWindow(contentTemplate, person)" nbButton [size]="small">Delete</button></td>
+                </tr>
+                </tbody>
+              <tfoot>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+>>>>>>> Stashed changes:src/app/views/pages/tables/admin-panel/admin-panel.component.html
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
