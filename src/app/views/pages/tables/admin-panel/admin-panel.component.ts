@@ -4,7 +4,7 @@ import { Person } from 'src/app/models/person';
 import { DataTable } from "simple-datatables";
 import { Subject, Subscription } from 'rxjs';
 import { PersonService } from 'src/app/services/person.service';
-import { DataTable } from "simple-datatables";
+import { company } from 'src/app/views/constants';
 
 
 @Component({
