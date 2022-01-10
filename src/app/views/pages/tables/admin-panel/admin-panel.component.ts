@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Person } from 'src/app/models/person';
-import { company } from 'src/app/views/constants';
+import { DataTable } from "simple-datatables";
+import { Subject, Subscription } from 'rxjs';
+import { PersonService } from 'src/app/services/person.service';
 import { DataTable } from "simple-datatables";
 
 
@@ -13,13 +15,18 @@ import { DataTable } from "simple-datatables";
 export class AdminPanelComponent implements OnInit {
 
   form: FormGroup;
+  persons: Person[];
+  dtTrigger = new Subject();
+  private subscription: Subscription = new Subscription();
 
-  constructor() { 
+
+  constructor(private personService: PersonService) { 
 
   }
 
   ngOnInit(): void {
     this.initaliseForm();
+    this.getAllPersons();
     const dataTable = new DataTable("#dataTableExample");
   }
 
@@ -82,6 +89,11 @@ export class AdminPanelComponent implements OnInit {
     })
   }
 
-  
+  getAllPersons() {
+    this.subscription.add(this.personService.getAllPersons().subscribe((persons: Person[]) => {
+      this.persons = persons;
+      this.dtTrigger.next();
+    }));
+  }
 }
 
