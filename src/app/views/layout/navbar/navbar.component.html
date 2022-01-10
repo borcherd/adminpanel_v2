@@ -70,38 +70,28 @@
       </li>
       <li class="nav-item nav-profile" ngbDropdown>
         <a class="nav-link" ngbDropdownToggle id="profileDropdown">
-          <img src="https://via.placeholder.com/30x30" alt="profile">
+          <img src={{currentUser.photo}} alt="profile">
         </a>
         <div ngbDropdownMenu aria-labelledby="profileDropdown">
           <div class="dropdown-header d-flex flex-column align-items-center">
             <div class="figure mb-3">
-              <img src="https://via.placeholder.com/80x80" alt="">
+              <img src={{currentUser.photo}} alt="" >
             </div>
             <div class="info text-center">
-              <p class="name font-weight-bold mb-0">Amiah Burton</p>
-              <p class="email text-muted mb-3">amiahburton@gmail.com</p>
+              <p class="name font-weight-bold mb-0">
+                {{ currentUser.firstName }} {{ currentUser.lastName }}
+              </p>
+              <p class="email text-muted mb-3">{{ currentUser.email }}</p>
             </div>
           </div>
           <div class="dropdown-body">
             <ul class="profile-nav p-0 pt-3">
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a routerLink="/general/profile" class="nav-link">
                   <i class="feather icon-user"></i>
                   <span>Profile</span>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="" (click)="false" class="nav-link">
-                  <i class="feather icon-edit"></i>
-                  <span>Edit Profile</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" (click)="false" class="nav-link">
-                  <i class="feather icon-repeat"></i>
-                  <span>Switch User</span>
-                </a>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a href="" (click)="onLogout($event)" class="nav-link">
                   <i class="feather icon-log-out"></i>
