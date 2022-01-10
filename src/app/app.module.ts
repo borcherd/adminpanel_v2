@@ -14,9 +14,6 @@ import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { HttpClientModule } from '@angular/common/http';
-
-
 
 @NgModule({
   declarations: [

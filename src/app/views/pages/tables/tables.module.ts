@@ -2,11 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { TablesComponent } from './tables.component';
-<<<<<<< Updated upstream
-import { DataTableComponent } from './data-table/data-table.component';
-
-=======
->>>>>>> Stashed changes
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormsModule } from 'ngx-custom-validators';
