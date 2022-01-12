@@ -5,6 +5,8 @@ import { DataTable } from "simple-datatables";
 import { Subject, Subscription } from 'rxjs';
 import { PersonService } from 'src/app/services/person.service';
 import { company } from 'src/app/views/constants';
+import { ColumnMode } from '@swimlane/ngx-datatable';
+
 
 
 @Component({
@@ -13,16 +15,15 @@ import { company } from 'src/app/views/constants';
   styleUrls: ['./admin-panel.component.scss']
 })
 export class AdminPanelComponent implements OnInit {
-
   form: FormGroup;
   persons: Person[];
-  dtTrigger = new Subject();
+  loadingIndicator = true;
+  reorderable = true;
+  ColumnMode = ColumnMode;
+  
   private subscription: Subscription = new Subscription();
 
-
-  constructor(private personService: PersonService) { 
-
-  }
+  constructor(private personService: PersonService) {   }
 
   ngOnInit(): void {
     this.initaliseForm();
@@ -89,11 +90,20 @@ export class AdminPanelComponent implements OnInit {
     })
   }
 
+  /**
+   * Fetches all persons from the database
+   */
   getAllPersons() {
+
     this.subscription.add(this.personService.getAllPersons().subscribe((persons: Person[]) => {
       this.persons = persons;
-      this.dtTrigger.next();
+      console.log(persons);
+      setTimeout(() => {
+        this.loadingIndicator = false;
+      }, 1500);
     }));
+    console.log(this.persons)
+    
   }
 }
 
