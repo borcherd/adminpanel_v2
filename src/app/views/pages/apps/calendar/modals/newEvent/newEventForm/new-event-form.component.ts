@@ -216,7 +216,11 @@ export class NewEventFormComponent implements OnInit {
     return date + " " + time;
   }
 
-
+  /**
+   * formats the date to the correct format needed in the database
+   * @param date datetimestring to format
+   * @returns a formatted date
+   */
   formatDateTimeToPush(date: string) {
     const temp_date = date.substring(0,10) + "T" + date.substring(11) + "+01:00" ;
     const temp_date2 = new Date(Date.parse(date));
