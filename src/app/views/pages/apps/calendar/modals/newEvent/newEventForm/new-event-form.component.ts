@@ -55,12 +55,33 @@ export class NewEventFormComponent implements OnInit {
   }
 
   /**
+   * gets the current logged in user
+   */
+  getCurrentUser(){
+    this.subscription.add(this.personService.getCurrentUser().subscribe((employee: Person) => {
+      // Setting current user
+      this.currentUser = employee;
+      console.log(employee);
+    }));
+  }
+
+  /**
+   * gets all apointments
+   */
+  getAllAppointments(){
+    this.subscription.add(this.appointmentService.getAllAppointments().subscribe((appointments: Appointment[])=>{
+      this.appointments = appointments
+      console.log(appointments)
+    }))
+  }
+
+  /**
    * initalizes forms to be used in html
    */
   initForm(){
      this.formEvent = new FormGroup({
-      startDateTime: new FormControl(this.formatDateTime(this.clickInfoInput.startStr), Validators.required),
-      endDateTime: new FormControl(this.formatDateTime(this.clickInfoInput.endStr), Validators.required),
+      startDateTime: new FormControl(this.formatDateTimeToDisplay(this.clickInfoInput.startStr), Validators.required),
+      endDateTime: new FormControl(this.formatDateTimeToDisplay(this.clickInfoInput.endStr), Validators.required),
       description:new FormControl('', Validators.required),
       new_customer: new FormControl(false),
       customer_list: new FormControl(''),
@@ -169,9 +190,13 @@ export class NewEventFormComponent implements OnInit {
     
   }
 
+  /**
+   * 
+   * @param appointment 
+   */
   createAppointment(appointment){
-    appointment.startDate = this.formatDate(appointment.startDate);
-    appointment.endDate = this.formatDate(appointment.endDate);
+    appointment.startDate = this.formatDateTimeToPush(appointment.startDate);
+    appointment.endDate = this.formatDateTimeToPush(appointment.endDate);
     this.subscription.add(this.appointmentService.createAppointment(appointment)
     .subscribe((updatedAppointment: Appointment) => {
       console.log('appointment returned from create');
@@ -184,31 +209,20 @@ export class NewEventFormComponent implements OnInit {
    * @param dateTimeString datetimestring to format
    * @returns a formatted datetimestring
    */
-  formatDateTime(dateTimeString:string){
+  formatDateTimeToDisplay(dateTimeString:string){
     const date = dateTimeString.substring(0,10)
     const time= dateTimeString.substring(11,19)
 
     return date + " " + time;
   }
 
-  formatDate(date: string) {
-    const temp_date = new Date(Date.parse(date));
-    temp_date.setHours(temp_date.getHours() + 2);
-    return temp_date.toISOString();
+
+  formatDateTimeToPush(date: string) {
+    const temp_date = date.substring(0,10) + "T" + date.substring(11) + "+01:00" ;
+    const temp_date2 = new Date(Date.parse(date));
+    temp_date2.setHours(temp_date2.getHours() + 2);
+    return temp_date2.toISOString();
   }
 
-  getCurrentUser(){
-    this.subscription.add(this.personService.getCurrentUser().subscribe((employee: Person) => {
-      // Setting current user
-      this.currentUser = employee;
-      console.log(employee);
-    }));
-  }
-
-  getAllAppointments(){
-    this.subscription.add(this.appointmentService.getAllAppointments().subscribe((appointments: Appointment[])=>{
-      this.appointments = appointments
-      console.log(appointments)
-    }))
-  }
+  
 }
