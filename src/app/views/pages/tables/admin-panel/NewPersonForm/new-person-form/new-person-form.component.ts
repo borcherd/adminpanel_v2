@@ -1,0 +1,108 @@
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ColumnMode } from '@swimlane/ngx-datatable';
+import { Subscription } from 'rxjs';
+import { Person } from 'src/app/models/person';
+import { PersonService } from 'src/app/services/person.service';
+import { company } from 'src/app/views/constants';
+
+@Component({
+  selector: 'app-new-person-form',
+  templateUrl: './new-person-form.component.html',
+  styleUrls: ['./new-person-form.component.scss']
+})
+export class NewPersonFormComponent implements OnInit {
+  form: FormGroup;
+  
+  private subscription: Subscription = new Subscription();
+
+  constructor(private personService: PersonService) {   }
+
+  ngOnInit(): void {
+    this.initaliseForm();
+  }
+
+  /**
+   * opens a new event (filebrowser)
+   * @param event 
+   */
+  openFileBrowser(event: any) {
+    event.preventDefault();
+    let element: HTMLElement = document.querySelector("#fileUploadInputExample") as HTMLElement;
+    element.click()
+  }
+
+  /**
+   * handles the filebrowser input
+   * @param event 
+   */
+  handleFileInput(event: any) {
+    if (event.target.files.length) {
+      let element: HTMLElement = document.querySelector("#fileUploadInputExample + .input-group .file-upload-info") as HTMLElement;
+      let fileName = event.target.files[0].name;
+      element.setAttribute( 'value', fileName)
+    }
+  }
+
+  /**
+   * when submitting a new person
+   */
+  onSubmit(){
+      this.createPerson();
+  }
+
+  createPerson(){
+    const person = new Person(
+      this.form.value.role.toString().toLowerCase(),
+      this.form.value.email,
+      this.form.value.firstName,
+      this.form.value.name,null,null);
+    if (this.form.value.role == '1'){
+      person.company = this.form.value.company;
+    } else {
+      person.company = company;
+    }
+    person.gsm = this.form.value.phoneNumber;
+    person.organization = company;
+    console.log(person)
+    this.verifyUser(person);
+  }
+
+  verifyUser(person: Person){
+    this.subscription.add(this.personService.getPersonByEmail(person.email).subscribe((response:Person)=>{
+      if (response != null) {
+        console.log("invalid email")
+      } else {
+        /* if (this.imageSrc) {
+          this.checkImageSize(person);
+        } else {
+          this.createPerson(person);
+        } */
+        this.subscription.add(this.personService.createPerson(person).subscribe((response: Person) => {
+          this.form.reset();
+          console.log(response);
+          //reload page/datatable component when succes
+        }))
+      }
+    }))
+  }
+
+  /**
+   * initialises forms to be used in html
+   */
+  initaliseForm(){
+    this.form = new FormGroup({
+      name: new FormControl('',Validators.required),
+      firstName: new FormControl('',Validators.required),
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+      ])),
+      phoneNumber: new FormControl('',Validators.required),
+      role: new FormControl('',Validators.required),
+      company: new FormControl('')
+    })
+  }
+}
+
