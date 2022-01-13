@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Appointment } from 'src/app/models/appointment';
 import { Person } from 'src/app/models/person';
 import { PersonService } from 'src/app/services/person.service';
-
+ 
 @Component({
   selector: 'app-new-event-form',
   templateUrl: './new-event-form.component.html',
@@ -13,20 +13,19 @@ import { PersonService } from 'src/app/services/person.service';
 export class NewEventFormComponent implements OnInit {
   private subscription: Subscription = new Subscription();
 
+  @Output() submitCloseEvent = new EventEmitter<number>();
 
-    @Output() submitCloseEvent = new EventEmitter<number>();
+  formEvent: FormGroup;
+  newCustomerShown: boolean = false;
+  customers: Person[];
 
-    formEvent: FormGroup;
-    newCustomerShown: boolean = false;
-    customers: Person[];
+  @Input()
+  clickInfoInput: DateSelectArg;
 
-    @Input()
-    clickInfoInput: DateSelectArg;
-
-    constructor(private customerService: PersonService){}
+  constructor(private customerService: PersonService){}
 
   ngOnInit() {
-    this.initForms();
+    this.initForm();
     // this.getCustomers(); //authenitcation errors grr
     console.log(this.customers)
     console.log(this.clickInfoInput.startStr)
@@ -46,7 +45,7 @@ export class NewEventFormComponent implements OnInit {
   /**
    * initalizes forms to be used in html
    */
-  initForms(){
+  initForm(){
      this.formEvent = new FormGroup({
       startDateTime: new FormControl(this.formatDateTime(this.clickInfoInput.startStr), Validators.required),
       endDateTime: new FormControl(this.formatDateTime(this.clickInfoInput.endStr), Validators.required),
