@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { EventClickArg } from '@fullcalendar/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-event-form',
   templateUrl: './edit-event-form.component.html'
 })
 export class EditEventFormComponent implements OnInit {
+  private subscription: Subscription = new Subscription();
+
+  @Output() submitCloseEvent = new EventEmitter<number>();
+  @Input() clickInfoInput: EventClickArg;
 
   formEvent: FormGroup;
   formCustomer: FormGroup;
@@ -32,7 +38,7 @@ export class EditEventFormComponent implements OnInit {
   /**
    * registers a new event (and if needed a new customer)
    */
-  newEvent(){
+  onSubmit(){
     console.log(this.formEvent);
     console.log(this.formCustomer);
   }
@@ -42,5 +48,9 @@ export class EditEventFormComponent implements OnInit {
    */
   toggleShow(){
     this.newCustomerShown = !this.newCustomerShown;
+  }
+
+  onDelete(){
+    console.log("delete clicked")
   }
 }
