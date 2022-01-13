@@ -23,6 +23,9 @@ export class EditPersonFormComponent implements OnInit {
     this.initForm();
   }
 
+  /**
+   * initialises the form
+   */
   initForm(){
     console.log(this.person.firstName)
     this.formPerson = new FormGroup({
@@ -33,15 +36,24 @@ export class EditPersonFormComponent implements OnInit {
     })
   }
 
+  /**
+   * function called when submit button is presses (updating)
+   */
   onSubmit(){
     this.createNewPerson();
   }
 
+  /**
+   * function called when delete button is pressed (delete)
+   */
   deletePerson(){
     console.log("todo: delete person")
     this.submitCloseEvent.emit(2)
   }
 
+  /**
+   * creates a new person object
+   */
   createNewPerson(){
     const newPerson = new Person(this.person.role,
     this.formPerson.controls['email'].value, 
@@ -53,6 +65,10 @@ export class EditPersonFormComponent implements OnInit {
     this.updatePerson(newPerson);
   }
 
+  /**
+   * updates the person object 
+   * @param person updated person object
+   */
   updatePerson(person: Person) {
     // this.createSubscription = this.apiService.updatePerson(person.personId, person).subscribe((response: Person) => {
     //   console.log(response);

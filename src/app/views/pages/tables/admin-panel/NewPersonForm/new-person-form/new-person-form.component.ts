@@ -52,6 +52,9 @@ export class NewPersonFormComponent implements OnInit {
       this.createPerson();
   }
 
+  /**
+   * creates a new person object
+   */
   createPerson(){
     const person = new Person(
       this.form.value.role.toString().toLowerCase(),
@@ -69,6 +72,10 @@ export class NewPersonFormComponent implements OnInit {
     this.verifyUser(person);
   }
 
+  /**
+   * verifies if the user exists by checking for duplicate emails, then pushes it to the database
+   * @param person to verify and push
+   */
   verifyUser(person: Person){
     this.subscription.add(this.personService.getPersonByEmail(person.email).subscribe((response:Person)=>{
       if (response != null) {

@@ -41,6 +41,10 @@ export class DataTableComponent implements OnInit {
     
   }
 
+  /**
+   * function called when clicking a row in the datatable, opens a modal
+   * @param event to edit or delete
+   */
   onActivate(event) {
     if(event.type == 'click') {
         console.log(event.row);
