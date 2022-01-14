@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
+import { Appointment } from 'src/app/models/appointment';
+import { AppointmentService } from 'src/app/services/appointment.service';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-event-modal.component';
 import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
@@ -13,6 +16,7 @@ import { newEventModalComponent } from './modals/newEvent/newEventModal/new-even
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
+  private subscription: Subscription = new Subscription();
 
   calendarOptions: CalendarOptions = {
     headerToolbar: {
@@ -21,7 +25,7 @@ export class CalendarComponent implements OnInit {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
     initialView: 'timeGridWeek',
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+    //initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     editable: true,
     selectable: true,
@@ -38,11 +42,28 @@ export class CalendarComponent implements OnInit {
   };
   currentEvents: EventApi[] = [];
   basicModalCloseResult: string = '';
+  appointments: any[] = [];
 
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private appointmentService: AppointmentService) { }
 
   ngOnInit(): void {
+    this.getAllAppointments();
+  }
+
+  /**
+   * gets all appointments from the database
+   */
+  getAllAppointments(){
+    this.subscription.add(this.appointmentService.getAllAppointments().subscribe((appointments2: Appointment[])=>{
+      appointments2.forEach(appointment => {
+        const translated = this.translateAppointment(appointment)
+        this.appointments.push(translated)
+      });
+      this.calendarOptions.events = this.appointments
+      console.log(this.appointments)
+    }))  
+    
   }
 
   /**
@@ -53,21 +74,6 @@ export class CalendarComponent implements OnInit {
     console.log(selectInfo)
     console.log("handleDateSelect")
     this.openModal(1, selectInfo)
-    
-    /*const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
-    } */
   }
 
   /**
@@ -76,6 +82,7 @@ export class CalendarComponent implements OnInit {
    */
   handleEventClick(clickInfo: EventClickArg) {
     console.log("handleEventClick")
+    console.log(clickInfo)
     this.openModal(2, clickInfo)
     
   }
@@ -106,5 +113,17 @@ export class CalendarComponent implements OnInit {
         modalEditEvent.componentInstance.clickInfo = info;
         break;
     }
+  }
+
+  translateAppointment(appointment:Appointment){   
+    return {
+      id: appointment.appointmentId,
+      start: appointment.startDate,
+      end: appointment.endDate,
+      title: appointment.info,
+      backgroundColor: 'rgba(0,204,204,.25)',
+      borderColor: '#00cccc'
+    }
+
   }
 }
