@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EventClickArg } from '@fullcalendar/core';
 import { Subscription } from 'rxjs';
-import { AppRoutingModule } from 'src/app/app-routing.module';
 import { Appointment } from 'src/app/models/appointment';
 import { Person } from 'src/app/models/person';
 import { AppointmentService } from 'src/app/services/appointment.service';
@@ -42,7 +41,7 @@ export class EditEventFormComponent implements OnInit {
   }
 
   /**
-   * initalizes forms to be used in html
+   * initalizes forms to be used 
    */
   initForms(){
     this.formEvent = new FormGroup({
@@ -53,7 +52,7 @@ export class EditEventFormComponent implements OnInit {
   }
 
   /**
-   * registers a new event (and if needed a new customer)
+   * updates the selected appointment
    */
   onSubmit(){
     this.subscription.add(this.appointmentService.getAppointmentById(Number(this.clickInfoInput.event.id)).subscribe((appointment: Appointment)=>{
@@ -71,6 +70,9 @@ export class EditEventFormComponent implements OnInit {
     }))
   }
 
+  /**
+   * deletes the selected appointment
+   */
   onDelete(){
     this.subscription.add(this.appointmentService.deleteAppointment(Number(this.clickInfoInput.event.id)).subscribe((appointment:Appointment)=>{
       console.log("deleted appointment")

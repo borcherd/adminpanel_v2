@@ -5,7 +5,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentService } from 'src/app/services/appointment.service';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-event-modal.component';
 import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
 
@@ -25,25 +24,16 @@ export class CalendarComponent implements OnInit {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
     initialView: 'timeGridWeek',
-    //initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     editable: true,
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
     select: this.handleDateSelect.bind(this),
-    eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this)
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
-    */
+    eventClick: this.handleEventClick.bind(this)
   };
-  currentEvents: EventApi[] = [];
   basicModalCloseResult: string = '';
   appointments: any[] = [];
-
 
   constructor(private modalService: NgbModal, private appointmentService: AppointmentService) { }
 
@@ -88,16 +78,6 @@ export class CalendarComponent implements OnInit {
   }
 
   /**
-   * Function to add all events to calender
-   * @param events: all events
-   */
-  handleEvents(events: EventApi[]) {
-    console.log("handleEvents");
-    console.log(events)
-    this.currentEvents = events;
-  }
-
-  /**
    * Function for opening modal according to the type
    * @param type type of modal (1 for new event, 2 for editing event)
    */
@@ -115,6 +95,11 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  /**
+   * translates the appointment to an event for the callender
+   * @param appointment to translate
+   * @returns an event for the callender
+   */
   translateAppointment(appointment:Appointment){   
     return {
       id: appointment.appointmentId,

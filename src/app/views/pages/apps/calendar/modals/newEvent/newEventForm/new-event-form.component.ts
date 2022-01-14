@@ -22,7 +22,6 @@ export class NewEventFormComponent implements OnInit {
   formEvent: FormGroup;
   newCustomerShown: boolean = false;
   customers: Person[];
-  customer: Person;
 
   appointments: Appointment[];
 
@@ -34,7 +33,6 @@ export class NewEventFormComponent implements OnInit {
   ngOnInit() {
     this.fetchAllData();
     this.initForm();
-    console.log(this.clickInfoInput.startStr)
   }
 
   fetchAllData(){
@@ -49,7 +47,6 @@ export class NewEventFormComponent implements OnInit {
   getCustomers() {
     this.subscription = this.personService.getAllPersonsByRole('customer').subscribe(
     (customers: Person[]) => {
-    console.log(customers);
     this.customers = customers;
     });
   }
@@ -59,9 +56,7 @@ export class NewEventFormComponent implements OnInit {
    */
   getCurrentUser(){
     this.subscription.add(this.personService.getCurrentUser().subscribe((employee: Person) => {
-      // Setting current user
       this.currentUser = employee;
-      console.log(employee);
     }));
   }
 
@@ -71,7 +66,6 @@ export class NewEventFormComponent implements OnInit {
   getAllAppointments(){
     this.subscription.add(this.appointmentService.getAllAppointments().subscribe((appointments: Appointment[])=>{
       this.appointments = appointments
-      console.log(appointments)
     }))
   }
 
@@ -132,14 +126,11 @@ export class NewEventFormComponent implements OnInit {
   onSubmit(){
     let appointment = new Appointment();
     if(this.customer_firstName != null){
-      console.log("103")
       const customer = this.createNewCustomer();
-      
     }else{
       this.createNewEvent();
     }
-    //upload new event and new customer, maybe new function or nested in create functions
-    //this.submitCloseEvent.emit(1)
+    this.submitCloseEvent.emit(1)
   }
 
   /**
@@ -179,29 +170,16 @@ export class NewEventFormComponent implements OnInit {
       this.currentUser, //this.employe when logging in works
       null)
     if (customer = null){
-      console.log(customer)
       appointment.customer = customer
     } else{
-      console.log(this.formEvent.controls['customer_list'].value)
       appointment.customer = this.formEvent.controls['customer_list'].value;
     }
-    console.log(appointment)
-    this.createAppointment(appointment)
-    
-  }
-
-  /**
-   * 
-   * @param appointment 
-   */
-  createAppointment(appointment){
     appointment.startDate = this.formatDateTimeToPush(appointment.startDate);
     appointment.endDate = this.formatDateTimeToPush(appointment.endDate);
     this.subscription.add(this.appointmentService.createAppointment(appointment)
     .subscribe((updatedAppointment: Appointment) => {
-      console.log('appointment returned from create');
-      console.log(updatedAppointment);
     }));
+    
   }
 
   /**
