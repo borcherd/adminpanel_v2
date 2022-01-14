@@ -20,12 +20,12 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
-import { DateTimePickerComponent } from '../../customComponents/date-time-picker/date-time-picker.component';
-
 import { NewEventFormComponent } from './calendar/modals/newEvent/newEventForm/new-event-form.component';
 import { newEventModalComponent } from './calendar/modals/newEvent/newEventModal/new-event-modal.component';
 import { EditEventFormComponent } from './calendar/modals/editEvent/editEventForm/edit-event-form.component';
 import { editEventModalComponent } from './calendar/modals/editEvent/editEventModal/edit-event-modal.component';
+
+import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -57,7 +57,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [ CalendarComponent, AppsComponent, DateTimePickerComponent, newEventModalComponent, NewEventFormComponent, EditEventFormComponent, editEventModalComponent],
+  declarations: [ CalendarComponent, AppsComponent, newEventModalComponent, NewEventFormComponent, EditEventFormComponent, editEventModalComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -68,6 +68,8 @@ const routes: Routes = [
     NgbDropdownModule,
     NgbTooltipModule,
     NgbNavModule,
+    NgbDatepickerModule,
+    NgbTimepickerModule,
     NgbCollapseModule,
     ReactiveFormsModule,
     NgSelectModule,

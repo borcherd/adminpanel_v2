@@ -1,18 +1,19 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTimepickerConfig, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-event-modal.component';
 import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent implements OnInit {
   private subscription: Subscription = new Subscription();
@@ -35,7 +36,7 @@ export class CalendarComponent implements OnInit {
   basicModalCloseResult: string = '';
   appointments: any[] = [];
 
-  constructor(private modalService: NgbModal, private appointmentService: AppointmentService) { }
+  constructor(private modalService: NgbModal, private appointmentService: AppointmentService,) {  }
 
   ngOnInit(): void {
     this.getAllAppointments();
