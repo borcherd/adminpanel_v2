@@ -7,8 +7,6 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 import { AdvancedUiComponent } from './advanced-ui.component';
-import { ImageCropperComponent } from './image-cropper/cropper.component';
-import { OwlCarouselComponent } from './owl-carousel/owl-carousel.component';
 import { SweetAlertComponent } from './sweet-alert/sweet-alert.component';
 
 const routes: Routes = [
@@ -22,14 +20,6 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'cropper',
-        component: ImageCropperComponent
-      },
-      {
-        path: 'owl-carousel',
-        component: OwlCarouselComponent
-      },
-      {
         path: 'sweet-alert',
         component: SweetAlertComponent
       }
@@ -38,7 +28,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [AdvancedUiComponent, ImageCropperComponent, OwlCarouselComponent, SweetAlertComponent],
+  declarations: [AdvancedUiComponent, SweetAlertComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

@@ -69,7 +69,6 @@ export class AppointmentService {
     return this.httpClient.get<Appointment>(url + 'api/v1/appointments/' + id, {
       headers: basicHeaders,
       withCredentials: true
-
     });
   }
 
