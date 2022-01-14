@@ -1,0 +1,6 @@
+-404 bij het updaten van appointment
+-validation
+-refreshing after push (datatable en calender)
+-dashboard
+-afbeelding uploaden
+-faceid en shit ?
