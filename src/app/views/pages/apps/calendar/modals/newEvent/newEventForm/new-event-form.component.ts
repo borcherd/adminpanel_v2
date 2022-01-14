@@ -1,57 +1,105 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DateSelectArg } from '@fullcalendar/angular';
+import { NgbDateStruct, NgbTimepickerConfig, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Appointment } from 'src/app/models/appointment';
 import { Person } from 'src/app/models/person';
+import { Role } from 'src/app/models/role';
+import { AppointmentService } from 'src/app/services/appointment.service';
 import { PersonService } from 'src/app/services/person.service';
-
+import { company } from 'src/app/views/constants';
+ 
 @Component({
   selector: 'app-new-event-form',
   templateUrl: './new-event-form.component.html',
 })
 export class NewEventFormComponent implements OnInit {
+  currentUser: Person;
+  selectedDate: NgbDateStruct;
+  time: NgbTimeStruct = {hour: 13, minute: 30, second: 0};
   private subscription: Subscription = new Subscription();
 
+  @Output() submitCloseEvent = new EventEmitter<number>();
 
-    @Output() submitCloseEvent = new EventEmitter<number>();
+  formEvent: FormGroup;
+  newCustomerShown: boolean = false;
+  customers: Person[];
 
-    formEvent: FormGroup;
-    newCustomerShown: boolean = false;
-    customers: Person[];
+  appointments: Appointment[];
 
-    @Input()
-    clickInfoInput: DateSelectArg;
+  @Input()
+  clickInfoInput: DateSelectArg;
 
-    constructor(private customerService: PersonService){}
+  constructor(private personService: PersonService, private appointmentService: AppointmentService, config: NgbTimepickerConfig) {
+    // customize default values of ratings used by this component tree
+    config.seconds = false;
+    config.spinners = false;
+  }
 
   ngOnInit() {
-    this.initForms();
-    // this.getCustomers(); //authenitcation errors grr
-    console.log(this.customers)
-    console.log(this.clickInfoInput.startStr)
+    this.fetchAllData();
+    this.initForm();
+  }
+
+  fetchAllData(){
+    this.getCurrentUser();
+    this.getAllAppointments(); 
+    this.getCustomers();
   }
 
   /**
    * Gets all customers from the database to display in the dropdown box
    */
   getCustomers() {
-    this.subscription = this.customerService.getAllPersonsByRole('customer').subscribe(
+    this.subscription = this.personService.getAllPersonsByRole('customer').subscribe(
     (customers: Person[]) => {
-    console.log(customers[0].personId);
     this.customers = customers;
     });
   }
 
   /**
+   * gets the current logged in user
+   */
+  getCurrentUser(){
+    this.subscription.add(this.personService.getCurrentUser().subscribe((employee: Person) => {
+      this.currentUser = employee;
+    }));
+  }
+
+  /**
+   * gets all apointments
+   */
+  getAllAppointments(){
+    this.subscription.add(this.appointmentService.getAllAppointments().subscribe((appointments: Appointment[])=>{
+      this.appointments = appointments
+    }))
+  }
+
+  /**
    * initalizes forms to be used in html
    */
-  initForms(){
+  initForm(){
+    console.log(this.clickInfoInput.startStr)
      this.formEvent = new FormGroup({
-      startDateTime: new FormControl(this.formatDateTime(this.clickInfoInput.startStr), Validators.required),
-      endDateTime: new FormControl(this.formatDateTime(this.clickInfoInput.endStr), Validators.required),
+      startDate: new FormControl({
+        year: Number(String(this.clickInfoInput.startStr).substring(0,4)),
+        month: Number(String(this.clickInfoInput.startStr).substring(5,7)), 
+        day: Number(String(this.clickInfoInput.startStr).substring(8,10))}),
+      startTime: new FormControl({
+        hour: Number(String(this.clickInfoInput.startStr).substring(11,13)),
+        minute: Number(String(this.clickInfoInput.startStr).substring(14,16)),
+        second: 0}),
+      endTime:new FormControl({
+        hour: Number(String(this.clickInfoInput.endStr).substring(11,13)),
+        minute: Number(String(this.clickInfoInput.endStr).substring(14,16)),
+        second: 0}),
+      endDate: new FormControl({
+        year: Number(String(this.clickInfoInput.endStr).substring(0,4)),
+        month: Number(String(this.clickInfoInput.endStr).substring(5,7)), 
+        day: Number(String(this.clickInfoInput.endStr).substring(8,10))}),
       description:new FormControl('', Validators.required),
-      new_customer: new FormControl(false),
+      new_customer: new FormControl(false), 
       customer_list: new FormControl(''),
     }) ;
 
@@ -60,7 +108,7 @@ export class NewEventFormComponent implements OnInit {
       if (checked) {
         this.formEvent.addControl('customer_email', new FormControl('', validators));
         this.formEvent.addControl('customer_name', new FormControl('', validators));
-        this.formEvent.addControl('customer_firstname', new FormControl('', validators));
+        this.formEvent.addControl('customer_firstName', new FormControl('', validators));
         this.formEvent.addControl('customer_company', new FormControl('', validators));
         this.formEvent.get('customer_list').clearAsyncValidators();
         this.formEvent.get('customer_list').updateValueAndValidity();
@@ -68,13 +116,13 @@ export class NewEventFormComponent implements OnInit {
       } else {
         this.formEvent.get('customer_email').clearAsyncValidators();
         this.formEvent.get('customer_name').clearAsyncValidators();
-        this.formEvent.get('customer_firstname').clearAsyncValidators();
+        this.formEvent.get('customer_firstName').clearAsyncValidators();
         this.formEvent.get('customer_email').updateValueAndValidity();
         this.formEvent.get('customer_name').updateValueAndValidity();
-        this.formEvent.get('customer_firstname').updateValueAndValidity();
+        this.formEvent.get('customer_firstName').updateValueAndValidity();
         this.formEvent.removeControl('customer_email');
         this.formEvent.removeControl('customer_name');
-        this.formEvent.removeControl('customer_firstname');
+        this.formEvent.removeControl('customer_firstName');
         this.formEvent.removeControl('customer_company');
         this.formEvent.addControl('customer_list', new FormControl('', validators));
 
@@ -90,7 +138,7 @@ export class NewEventFormComponent implements OnInit {
 
   get customer_name() {    return this.formEvent.get('customer_name') as FormControl;  }
 
-  get customer_firstname() {    return this.formEvent.get('customer_firstname') as FormControl;  }
+  get customer_firstName() {    return this.formEvent.get('customer_firstName') as FormControl;  }
 
   get customer_company() {    return this.formEvent.get('customer_company') as FormControl;  }
 
@@ -99,16 +147,12 @@ export class NewEventFormComponent implements OnInit {
    */
   onSubmit(){
     let appointment = new Appointment();
-    if(this.newCustomerShown){
+    if(this.customer_firstName != null){
       const customer = this.createNewCustomer();
-      appointment = this.createNewEvent(customer);
     }else{
-      appointment = this.createNewEvent();
+      this.createNewEvent();
     }
-    //upload new event and new customer, maybe new function or nested in create functions
-    console.log(this.formEvent);
-
-    //this.submitCloseEvent.emit(1)
+    this.submitCloseEvent.emit(1)
   }
 
   /**
@@ -117,14 +161,21 @@ export class NewEventFormComponent implements OnInit {
    */
   createNewCustomer(){
     const customer = new Person(
-      null, 
+      Role.CUSTOMER, 
       this.formEvent.controls['customer_email'].value, 
-      this.formEvent.controls['customer_firstname'].value, 
+      this.formEvent.controls['customer_firstName'].value, 
       this.formEvent.controls['customer_name'].value, 
       this.formEvent.controls['customer_company'].value,
       null); //faceid?
 
-    return customer;
+
+    customer.organization = company;
+    customer.gsm = "000"; //todo: create control for phone number
+    this.subscription.add(this.personService.createPerson(customer).subscribe((response: Person) => {
+      console.log(response);
+      this.createNewEvent(customer);
+      //reload page/datatable component when succes
+    }))
   }
 
   /**
@@ -133,31 +184,63 @@ export class NewEventFormComponent implements OnInit {
    * @returns a newly created event
    */
   createNewEvent(customer = null){
+    const startDateTime = this.createDateTime(this.formEvent.controls['startDate'].value, this.formEvent.controls['startTime'].value)
+    const endDateTime = this.createDateTime(this.formEvent.controls['endDate'].value, this.formEvent.controls['endTime'].value)
     const appointment = new Appointment(
-      this.formEvent.controls['startDateTime'].value,
-      this.formEvent.controls['endDateTime'].value,
+      startDateTime,
+      endDateTime,
       true,
       this.formEvent.controls['description'].value,
-      null, //this.employe when logging in works
+      this.currentUser, //this.employe when logging in works
       null)
     if (customer = null){
       appointment.customer = customer
     } else{
-      appointment.customer = this.formEvent.controls['customer'].value;
+      appointment.customer = this.formEvent.controls['customer_list'].value;
     }
-    return appointment;
-
+    this.subscription.add(this.appointmentService.createAppointment(appointment)
+    .subscribe((appointment: Appointment) => {
+    }));
+    
   }
 
   /**
-   * formats the datetimestring from the clickevent into a datetimestring to show in the form
-   * @param dateTimeString datetimestring to format
-   * @returns a formatted datetimestring
+   * turns the input from the date and timepicker into a formatted date
+   * @param date to format
+   * @param time to format
+   * @returns formatted datetime
    */
-  formatDateTime(dateTimeString:string){
-    const date = dateTimeString.substring(0,10)
-    const time= dateTimeString.substring(11,19)
-
-    return date + " " + time;
+  createDateTime(date, time){
+    //"2022-01-13T06:00:00"
+    console.log(date)
+    console.log(time)
+    ;
+    const DateTime = date.year + "-" +
+    this.checkDoubleDigits(date.month) + "-" +
+    this.checkDoubleDigits(date.day) + "T" +
+    this.checkDoubleDigits(time.hour) + ":" + 
+    this.checkDoubleDigits(time.minute) + ":" +
+    "00" + "+01:00";
+    console.log(DateTime)
+    const temp_date = new Date(Date.parse(DateTime));
+    console.log(temp_date)
+    temp_date.setHours(temp_date.getHours() + 2);
+    console.log(temp_date)
+    return temp_date.toISOString();
   }
+
+  /**
+   * checks if the length of arg is 1
+   * @param arg to check the length of
+   * @returns correct length of arg (has to be 2 for dateobject)
+   */
+  checkDoubleDigits(arg){
+    console.log(String(arg).length);
+    if (String(arg).length == 1){
+      arg = "0" + arg
+    }
+    return arg
+  }
+
+  
 }

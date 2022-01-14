@@ -18,7 +18,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   /**
    * closes the modal
    */
-  modalClose(){
+   modalClose(event){
     this.dismissAll();
   }
 

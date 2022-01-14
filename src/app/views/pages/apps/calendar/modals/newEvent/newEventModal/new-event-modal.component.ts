@@ -21,8 +21,6 @@ export class newEventModalComponent extends NgbModal implements OnInit{
    * closes the modal
    */
   modalClose(event){
-    console.log("test")
-    console.log(event);
     this.dismissAll();
   }
 
