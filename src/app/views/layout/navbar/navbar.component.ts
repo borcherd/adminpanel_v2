@@ -54,13 +54,15 @@ export class NavbarComponent implements OnInit {
       // Setting current user
       this.currentUser = employee;
       console.log(employee);
-      this.subscription.add(this.apiService.getPersonProfilePicture(employee.personId).subscribe((profilePicture:ProfilePicture)=>{
+      employee.photo = '/assets/images/default_icon.png';
+      this.currentUser = employee;
+      /* this.subscription.add(this.apiService.getPersonProfilePicture(employee.personId).subscribe((profilePicture:ProfilePicture)=>{
           employee.photo = 'data:image/png;base64,' + profilePicture.image;
           this.currentUser = employee;
         }, error => {
           employee.photo = '/assets/images/default_icon.png';
           this.currentUser = employee;
-      }))
+      })) */
     }));
   }
 }
