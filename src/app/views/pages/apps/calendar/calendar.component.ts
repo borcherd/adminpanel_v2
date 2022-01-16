@@ -8,6 +8,7 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-event-modal.component';
 import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -25,13 +26,17 @@ export class CalendarComponent implements OnInit {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
     initialView: 'timeGridWeek',
+    slotMinTime: "05:00:00",
+    slotMaxTime:"22:00:00",
+    slotDuration: '00:10:00',
     weekends: true,
     editable: true,
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
     select: this.handleDateSelect.bind(this),
-    eventClick: this.handleEventClick.bind(this)
+    eventClick: this.handleEventClick.bind(this),
+    eventDragMinDistance:10000 //disable dragging
   };
   basicModalCloseResult: string = '';
   appointments: any[] = [];
