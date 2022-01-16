@@ -6,6 +6,7 @@ import { Appointment } from 'src/app/models/appointment';
 import { Person } from 'src/app/models/person';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { PersonService } from 'src/app/services/person.service';
+import { Utils } from 'src/app/utils/utils';
 import Swal from 'sweetalert2';
 
 @Component({ 
@@ -14,6 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class EditEventFormComponent implements OnInit {
   private subscription: Subscription = new Subscription();
+  private utils: Utils = new Utils();
 
   @Output() submitCloseEvent = new EventEmitter<number>();
   @Input() clickInfoInput: EventClickArg;
@@ -70,8 +72,8 @@ export class EditEventFormComponent implements OnInit {
   onSubmit(){
     this.subscription.add(this.appointmentService.getAppointmentById(Number(this.clickInfoInput.event.id)).subscribe((Rappointment: Appointment)=>{  
       this.subscription.add(this.personService.getPersonById(Rappointment.customer.personId).subscribe((r:Person)=>{
-        const startDateTime = this.createDateTime(this.formEvent.controls['startDate'].value, this.formEvent.controls['startTime'].value)
-        const endDateTime = this.createDateTime(this.formEvent.controls['endDate'].value, this.formEvent.controls['endTime'].value)
+        const startDateTime = this.utils.createDateTime(this.formEvent.controls['startDate'].value, this.formEvent.controls['startTime'].value)
+        const endDateTime = this.utils.createDateTime(this.formEvent.controls['endDate'].value, this.formEvent.controls['endTime'].value)
         const updated = new Appointment(
           startDateTime,
           endDateTime, 
@@ -115,37 +117,5 @@ export class EditEventFormComponent implements OnInit {
       this.submitCloseEvent.emit(2)
 
     }))
-  }
-
-  
-  /**
-   * turns the input from the date and timepicker into a formatted date
-   * @param date to format
-   * @param time to format
-   * @returns formatted datetime
-   */ //in utils zetten
-   createDateTime(date, time){
-    ;
-    const DateTime = date.year + "-" +
-    this.checkDoubleDigits(date.month) + "-" +
-    this.checkDoubleDigits(date.day) + "T" +
-    this.checkDoubleDigits(time.hour) + ":" + 
-    this.checkDoubleDigits(time.minute) + ":" +
-    "00" + "+01:00";
-    const temp_date = new Date(Date.parse(DateTime));
-    temp_date.setHours(temp_date.getHours() + 2);
-    return temp_date.toISOString();
-  }
-
-  /**
-   * checks if the length of arg is 1
-   * @param arg to check the length of
-   * @returns correct length of arg (has to be 2 for dateobject)
-   */
-  checkDoubleDigits(arg){
-    if (String(arg).length == 1){
-      arg = "0" + arg
-    }
-    return arg
   }
 }

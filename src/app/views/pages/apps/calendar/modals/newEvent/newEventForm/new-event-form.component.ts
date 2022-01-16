@@ -8,6 +8,7 @@ import { Person } from 'src/app/models/person';
 import { Role } from 'src/app/models/role';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { PersonService } from 'src/app/services/person.service';
+import { Utils } from 'src/app/utils/utils';
 import { company } from 'src/app/views/constants';
 import Swal from 'sweetalert2';
  
@@ -18,8 +19,8 @@ import Swal from 'sweetalert2';
 export class NewEventFormComponent implements OnInit {
   currentUser: Person;
   selectedDate: NgbDateStruct;
-  time: NgbTimeStruct = {hour: 13, minute: 30, second: 0};
   private subscription: Subscription = new Subscription();
+  utils: Utils = new Utils();
 
   @Output() submitCloseEvent = new EventEmitter<number>();
 
@@ -33,7 +34,6 @@ export class NewEventFormComponent implements OnInit {
   clickInfoInput: DateSelectArg;
 
   constructor(private personService: PersonService, private appointmentService: AppointmentService, config: NgbTimepickerConfig) {
-    // customize default values of ratings used by this component tree
     config.seconds = false;
     config.spinners = false;
   }
@@ -181,8 +181,8 @@ export class NewEventFormComponent implements OnInit {
    * @returns a newly created event
    */
   createNewEvent(customer = null){
-    const startDateTime = this.createDateTime(this.formEvent.controls['startDate'].value, this.formEvent.controls['startTime'].value)
-    const endDateTime = this.createDateTime(this.formEvent.controls['endDate'].value, this.formEvent.controls['endTime'].value)
+    const startDateTime = this.utils.createDateTime(this.formEvent.controls['startDate'].value, this.formEvent.controls['startTime'].value)
+    const endDateTime = this.utils.createDateTime(this.formEvent.controls['endDate'].value, this.formEvent.controls['endTime'].value)
     const appointment = new Appointment(
       startDateTime,
       endDateTime,
@@ -207,38 +207,5 @@ export class NewEventFormComponent implements OnInit {
         timer:1113000
       }) 
     }));
-  }
-
-  /**
-   * turns the input from the date and timepicker into a formatted date
-   * @param date to format
-   * @param time to format
-   * @returns formatted datetime
-   */
-  createDateTime(date, time){
-    ;
-    const DateTime = date.year + "-" +
-    this.checkDoubleDigits(date.month) + "-" +
-    this.checkDoubleDigits(date.day) + "T" +
-    this.checkDoubleDigits(time.hour) + ":" + 
-    this.checkDoubleDigits(time.minute) + ":" +
-    "00" + "+01:00";
-    const temp_date = new Date(Date.parse(DateTime));
-    temp_date.setHours(temp_date.getHours() + 2);
-    return temp_date.toISOString();
-  }
-
-  /**
-   * checks if the length of arg is 1
-   * @param arg to check the length of
-   * @returns correct length of arg (has to be 2 for dateobject)
-   */
-  checkDoubleDigits(arg){
-    if (String(arg).length == 1){
-      arg = "0" + arg
-    }
-    return arg
-  }
-
-  
+  }  
 }

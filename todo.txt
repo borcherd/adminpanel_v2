@@ -1,6 +1,6 @@
--404 bij het updaten van appointment
--validation
--refreshing after push (datatable en calender)
+-slow when creating new appointment (dus niet goed voor refreshen) ? kobe
 -dashboard
--afbeelding uploaden
--faceid en shit ?
+-afbeelding uploaden ? kobe
+-faceid en shit ? kobe
+-getcurrentuser om appointments per user te krijgen //getappointmentsbyuserid voor wouta
+-datatable searchable maken

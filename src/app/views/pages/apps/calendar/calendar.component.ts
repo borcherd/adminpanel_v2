@@ -5,6 +5,7 @@ import { NgbModal, NgbTimepickerConfig, NgbTimeStruct } from '@ng-bootstrap/ng-b
 import { Subscription } from 'rxjs';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentService } from 'src/app/services/appointment.service';
+import { Utils } from 'src/app/utils/utils';
 import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-event-modal.component';
 import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
 
@@ -16,6 +17,7 @@ import { newEventModalComponent } from './modals/newEvent/newEventModal/new-even
 })
 export class CalendarComponent implements OnInit {
   private subscription: Subscription = new Subscription();
+  private utils: Utils = new Utils;
 
   calendarOptions: CalendarOptions = {
     headerToolbar: {
@@ -53,14 +55,12 @@ export class CalendarComponent implements OnInit {
     const appointments: any[] = [];
     this.subscription.add(this.appointmentService.getAllAppointments().subscribe((appointments2: Appointment[])=>{
       appointments2.forEach(appointment => {
-        const translated = this.translateAppointment(appointment)
+        const translated = this.utils.translateAppointment(appointment)
         appointments.push(translated)
       });
       this.appointments = appointments;
       this.calendarOptions.events = this.appointments
-
     }))  
-    
   }
 
   /**
@@ -102,22 +102,5 @@ export class CalendarComponent implements OnInit {
         })
         break;
     }
-  }
-
-  /**
-   * translates the appointment to an event for the callender
-   * @param appointment to translate
-   * @returns an event for the callender
-   */
-  translateAppointment(appointment:Appointment){   
-    return {
-      id: appointment.appointmentId,
-      start: appointment.startDate,
-      end: appointment.endDate,
-      title: appointment.info,
-      backgroundColor: 'rgba(0,204,204,.25)',
-      borderColor: '#00cccc'
-    }
-
   }
 }
