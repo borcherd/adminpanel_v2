@@ -1,22 +1,25 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Person } from 'src/app/models/person';
+import { PersonService } from 'src/app/services/person.service';
 import { company } from 'src/app/views/constants';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-person-form',
   templateUrl: './edit-person-form.component.html'
 })
 export class EditPersonFormComponent implements OnInit {
-
+  private subscription: Subscription = new Subscription();
   @Output() submitCloseEvent = new EventEmitter<number>();
-  @Input() clickInfoInput: Event;
+  @Input() clickInfoInput:any;
 
   formPerson: FormGroup;
   person: Person;
 
 
-  constructor() { }
+  constructor(private personService:PersonService) { }
 
   ngOnInit(): void {
     this.person = this.clickInfoInput['row']
@@ -27,7 +30,6 @@ export class EditPersonFormComponent implements OnInit {
    * initialises the form
    */
   initForm(){
-    console.log(this.person.firstName)
     this.formPerson = new FormGroup({
       email: new FormControl(this.person.email),
       name: new FormControl(this.person.lastName),
@@ -47,7 +49,20 @@ export class EditPersonFormComponent implements OnInit {
    * function called when delete button is pressed (delete)
    */
   deletePerson(){
-    console.log("todo: delete person")
+    console.log(this.clickInfoInput.row.personId)
+    this.subscription.add(this.personService.deletePerson(this.clickInfoInput.row.personId).subscribe((person: Person)=>{
+      console.log(this.person);
+      Swal.fire({
+        title: 'Succes!',
+        text: 'Persoon verwijderd',
+        icon: 'success',
+        confirmButtonText: 'Cool',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton:false,
+        timer:1113000
+      })
+    }))
     this.submitCloseEvent.emit(2)
   }
 
@@ -70,11 +85,20 @@ export class EditPersonFormComponent implements OnInit {
    * @param person updated person object
    */
   updatePerson(person: Person) {
-    // this.createSubscription = this.apiService.updatePerson(person.personId, person).subscribe((response: Person) => {
-    //   console.log(response);
-    // });
-    console.log('updating in dialog');
-    console.log(person);
-    this.submitCloseEvent.emit(1)
+    this.subscription.add(this.personService.updatePerson(this.clickInfoInput.row.personId, person).subscribe((Response: Person)=>{
+      console.log(Response)
+      Swal.fire({
+        title: 'Succes!',
+        text: 'Persoon geüpdate',
+        icon: 'success',
+        confirmButtonText: 'Cool',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton:false,
+        timer:1113000
+      })
+      this.submitCloseEvent.emit(1)
+
+    }))
   }
 }

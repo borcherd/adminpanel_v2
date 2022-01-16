@@ -69,21 +69,24 @@ export class EditEventFormComponent implements OnInit {
    * updates the selected appointment
    */
   onSubmit(){
-    this.subscription.add(this.appointmentService.getAppointmentById(Number(this.clickInfoInput.event.id)).subscribe((appointment: Appointment)=>{
-      const startDateTime = this.createDateTime(this.formEvent.controls['startDate'].value, this.formEvent.controls['startTime'].value)
-      const endDateTime = this.createDateTime(this.formEvent.controls['endDate'].value, this.formEvent.controls['endTime'].value)
-      const updated = new Appointment(
-        startDateTime,
-        endDateTime, 
-        true, this.formEvent.controls['description'].value,
-        this.currentUser, appointment.customer
-      )
-      updated.appointmentId = appointment.appointmentId;
-      console.log(updated)
-      this.subscription.add(this.appointmentService.updateAppointment(appointment.appointmentId, updated).subscribe((appointment:Appointment)=>{
+    this.subscription.add(this.appointmentService.getAppointmentById(Number(this.clickInfoInput.event.id)).subscribe((Rappointment: Appointment)=>{  
+      this.subscription.add(this.personService.getPersonById(Rappointment.customer.personId).subscribe((r:Person)=>{
+        const startDateTime = this.createDateTime(this.formEvent.controls['startDate'].value, this.formEvent.controls['startTime'].value)
+        const endDateTime = this.createDateTime(this.formEvent.controls['endDate'].value, this.formEvent.controls['endTime'].value)
+        const updated = new Appointment(
+          startDateTime,
+          endDateTime, 
+          true,
+          this.formEvent.controls['description'].value,
+          this.currentUser, r
+        )
+        console.log(Rappointment)
         console.log(updated)
-        this.submitCloseEvent.emit(1)
+        this.subscription.add(this.appointmentService.updateAppointment(Rappointment.appointmentId, updated).subscribe((r:Appointment)=>{
+          console.log(r)
+          this.submitCloseEvent.emit(1)
 
+        }))
       }))
     }))
   }
@@ -105,7 +108,7 @@ export class EditEventFormComponent implements OnInit {
    * @param date to format
    * @param time to format
    * @returns formatted datetime
-   */
+   */ //in utils zetten
    createDateTime(date, time){
     //"2022-01-13T06:00:00"
     console.log(date)

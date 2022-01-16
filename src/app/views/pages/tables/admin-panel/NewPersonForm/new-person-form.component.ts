@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ColumnMode } from '@swimlane/ngx-datatable';
 import { Subscription } from 'rxjs';
 import { Person } from 'src/app/models/person';
 import { PersonService } from 'src/app/services/person.service';
 import { company } from 'src/app/views/constants';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-new-person-form',
@@ -88,7 +87,16 @@ export class NewPersonFormComponent implements OnInit {
         } */
         this.subscription.add(this.personService.createPerson(person).subscribe((response: Person) => {
           this.form.reset();
-          console.log(response);
+          Swal.fire({
+            title: 'Succes!',
+            text: 'Persoon geregistreerd',
+            icon: 'success',
+            confirmButtonText: 'Cool',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton:false,
+            timer:1113000
+          })
           //reload page/datatable component when succes
         }))
       }
