@@ -7,8 +7,6 @@ import { Appointment } from 'src/app/models/appointment';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-event-modal.component';
 import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -51,13 +49,16 @@ export class CalendarComponent implements OnInit {
    * gets all appointments from the database
    */
   getAllAppointments(){
+    this.calendarOptions.events = null
+    const appointments: any[] = [];
     this.subscription.add(this.appointmentService.getAllAppointments().subscribe((appointments2: Appointment[])=>{
       appointments2.forEach(appointment => {
         const translated = this.translateAppointment(appointment)
-        this.appointments.push(translated)
+        appointments.push(translated)
       });
+      this.appointments = appointments;
       this.calendarOptions.events = this.appointments
-      console.log(this.appointments)
+
     }))  
     
   }
@@ -67,8 +68,6 @@ export class CalendarComponent implements OnInit {
   * @param selectInfo: info of the selected moment 
   */
   handleDateSelect(selectInfo: DateSelectArg) {   
-    console.log(selectInfo)
-    console.log("handleDateSelect")
     this.openModal(1, selectInfo)
   }
 
@@ -77,8 +76,6 @@ export class CalendarComponent implements OnInit {
    * @param clickInfo: info of the clicked event
    */
   handleEventClick(clickInfo: EventClickArg) {
-    console.log("handleEventClick")
-    console.log(clickInfo)
     this.openModal(2, clickInfo)
     
   }
@@ -93,10 +90,16 @@ export class CalendarComponent implements OnInit {
       case 1:
         const modalNewEvent = this.modalService.open(newEventModalComponent);
         modalNewEvent.componentInstance.clickInfo = info;
+        modalNewEvent.dismissed.subscribe(r =>{
+          this.getAllAppointments()
+        })
         break;
       case 2:
         const modalEditEvent = this.modalService.open(editEventModalComponent);
         modalEditEvent.componentInstance.clickInfo = info;
+        modalEditEvent.dismissed.subscribe(r =>{
+          this.getAllAppointments()
+        })
         break;
     }
   }

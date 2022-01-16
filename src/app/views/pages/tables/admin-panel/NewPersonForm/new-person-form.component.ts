@@ -67,7 +67,6 @@ export class NewPersonFormComponent implements OnInit {
     }
     person.gsm = this.form.value.phoneNumber;
     person.organization = company;
-    console.log(person)
     this.verifyUser(person);
   }
 
@@ -96,8 +95,8 @@ export class NewPersonFormComponent implements OnInit {
             position: 'top-end',
             showConfirmButton:false,
             timer:1113000
-          })
-          //reload page/datatable component when succes
+          }) 
+          window.location.reload();
         }))
       }
     }))

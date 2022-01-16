@@ -6,6 +6,7 @@ import { Appointment } from 'src/app/models/appointment';
 import { Person } from 'src/app/models/person';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { PersonService } from 'src/app/services/person.service';
+import Swal from 'sweetalert2';
 
 @Component({ 
   selector: 'app-edit-event-form',
@@ -24,7 +25,6 @@ export class EditEventFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.clickInfoInput.event.title)
     this.getCurrentUser();
     this.initForms();
   }
@@ -36,7 +36,6 @@ export class EditEventFormComponent implements OnInit {
     this.subscription.add(this.personService.getCurrentUser().subscribe((employee: Person) => {
       // Setting current user
       this.currentUser = employee;
-      console.log(employee);
     }));
   }
 
@@ -80,10 +79,17 @@ export class EditEventFormComponent implements OnInit {
           this.formEvent.controls['description'].value,
           this.currentUser, r
         )
-        console.log(Rappointment)
-        console.log(updated)
         this.subscription.add(this.appointmentService.updateAppointment(Rappointment.appointmentId, updated).subscribe((r:Appointment)=>{
-          console.log(r)
+          Swal.fire({
+            title: 'Succes!',
+            text: 'Evenement aangepast',
+            icon: 'success',
+            confirmButtonText: 'Cool',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton:false,
+            timer:1113000
+          }) 
           this.submitCloseEvent.emit(1)
 
         }))
@@ -96,7 +102,16 @@ export class EditEventFormComponent implements OnInit {
    */
   onDelete(){
     this.subscription.add(this.appointmentService.deleteAppointment(Number(this.clickInfoInput.event.id)).subscribe((appointment:Appointment)=>{
-      console.log("deleted appointment")
+      Swal.fire({
+        title: 'Succes!',
+        text: 'Evenement verwijderd',
+        icon: 'success',
+        confirmButtonText: 'Cool',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton:false,
+        timer:1113000
+      }) 
       this.submitCloseEvent.emit(2)
 
     }))
@@ -110,9 +125,6 @@ export class EditEventFormComponent implements OnInit {
    * @returns formatted datetime
    */ //in utils zetten
    createDateTime(date, time){
-    //"2022-01-13T06:00:00"
-    console.log(date)
-    console.log(time)
     ;
     const DateTime = date.year + "-" +
     this.checkDoubleDigits(date.month) + "-" +
@@ -120,11 +132,8 @@ export class EditEventFormComponent implements OnInit {
     this.checkDoubleDigits(time.hour) + ":" + 
     this.checkDoubleDigits(time.minute) + ":" +
     "00" + "+01:00";
-    console.log(DateTime)
     const temp_date = new Date(Date.parse(DateTime));
-    console.log(temp_date)
     temp_date.setHours(temp_date.getHours() + 2);
-    console.log(temp_date)
     return temp_date.toISOString();
   }
 
@@ -134,7 +143,6 @@ export class EditEventFormComponent implements OnInit {
    * @returns correct length of arg (has to be 2 for dateobject)
    */
   checkDoubleDigits(arg){
-    console.log(String(arg).length);
     if (String(arg).length == 1){
       arg = "0" + arg
     }

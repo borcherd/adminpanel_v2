@@ -9,6 +9,7 @@ import { Role } from 'src/app/models/role';
 import { AppointmentService } from 'src/app/services/appointment.service';
 import { PersonService } from 'src/app/services/person.service';
 import { company } from 'src/app/views/constants';
+import Swal from 'sweetalert2';
  
 @Component({
   selector: 'app-new-event-form',
@@ -80,36 +81,34 @@ export class NewEventFormComponent implements OnInit {
    * initalizes forms to be used in html
    */
   initForm(){
-    console.log(this.clickInfoInput.startStr)
      this.formEvent = new FormGroup({
       startDate: new FormControl({
         year: Number(String(this.clickInfoInput.startStr).substring(0,4)),
         month: Number(String(this.clickInfoInput.startStr).substring(5,7)), 
-        day: Number(String(this.clickInfoInput.startStr).substring(8,10))}),
+        day: Number(String(this.clickInfoInput.startStr).substring(8,10))}, Validators.required),
       startTime: new FormControl({
         hour: Number(String(this.clickInfoInput.startStr).substring(11,13)),
         minute: Number(String(this.clickInfoInput.startStr).substring(14,16)),
-        second: 0}),
+        second: 0}, Validators.required),
       endTime:new FormControl({
         hour: Number(String(this.clickInfoInput.endStr).substring(11,13)),
         minute: Number(String(this.clickInfoInput.endStr).substring(14,16)),
-        second: 0}),
+        second: 0}, Validators.required),
       endDate: new FormControl({
         year: Number(String(this.clickInfoInput.endStr).substring(0,4)),
         month: Number(String(this.clickInfoInput.endStr).substring(5,7)), 
-        day: Number(String(this.clickInfoInput.endStr).substring(8,10))}),
+        day: Number(String(this.clickInfoInput.endStr).substring(8,10))}, Validators.required),
       description:new FormControl('', Validators.required),
       new_customer: new FormControl(false), 
       customer_list: new FormControl(''),
     }) ;
 
     this.new_customer.valueChanges.subscribe(checked => {
-      const validators = [Validators.required];
       if (checked) {
-        this.formEvent.addControl('customer_email', new FormControl('', validators));
-        this.formEvent.addControl('customer_name', new FormControl('', validators));
-        this.formEvent.addControl('customer_firstName', new FormControl('', validators));
-        this.formEvent.addControl('customer_company', new FormControl('', validators));
+        this.formEvent.addControl('customer_email', new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]));
+        this.formEvent.addControl('customer_name', new FormControl('', Validators.required));
+        this.formEvent.addControl('customer_firstName', new FormControl('', Validators.required));
+        this.formEvent.addControl('customer_company', new FormControl('', Validators.required));
         this.formEvent.get('customer_list').clearAsyncValidators();
         this.formEvent.get('customer_list').updateValueAndValidity();
         this.formEvent.removeControl('customer_list');
@@ -124,9 +123,9 @@ export class NewEventFormComponent implements OnInit {
         this.formEvent.removeControl('customer_name');
         this.formEvent.removeControl('customer_firstName');
         this.formEvent.removeControl('customer_company');
-        this.formEvent.addControl('customer_list', new FormControl('', validators));
-
+        this.formEvent.addControl('customer_list', new FormControl('', Validators.required));
       }
+
     });
   }
   
@@ -168,11 +167,9 @@ export class NewEventFormComponent implements OnInit {
       this.formEvent.controls['customer_company'].value,
       null); //faceid?
 
-
     customer.organization = company;
     customer.gsm = "000"; //todo: create control for phone number
     this.subscription.add(this.personService.createPerson(customer).subscribe((response: Person) => {
-      console.log(response);
       this.createNewEvent(customer);
       //reload page/datatable component when succes
     }))
@@ -198,10 +195,18 @@ export class NewEventFormComponent implements OnInit {
     } else{
       appointment.customer = this.formEvent.controls['customer_list'].value;
     }
-    this.subscription.add(this.appointmentService.createAppointment(appointment)
-    .subscribe((appointment: Appointment) => {
+    this.subscription.add(this.appointmentService.createAppointment(appointment).subscribe(() => {
+      Swal.fire({
+        title: 'Succes!',
+        text: 'Evenement aangemaakt!',
+        icon: 'success',
+        confirmButtonText: 'Cool',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton:false,
+        timer:1113000
+      }) 
     }));
-    
   }
 
   /**
@@ -211,9 +216,6 @@ export class NewEventFormComponent implements OnInit {
    * @returns formatted datetime
    */
   createDateTime(date, time){
-    //"2022-01-13T06:00:00"
-    console.log(date)
-    console.log(time)
     ;
     const DateTime = date.year + "-" +
     this.checkDoubleDigits(date.month) + "-" +
@@ -221,11 +223,8 @@ export class NewEventFormComponent implements OnInit {
     this.checkDoubleDigits(time.hour) + ":" + 
     this.checkDoubleDigits(time.minute) + ":" +
     "00" + "+01:00";
-    console.log(DateTime)
     const temp_date = new Date(Date.parse(DateTime));
-    console.log(temp_date)
     temp_date.setHours(temp_date.getHours() + 2);
-    console.log(temp_date)
     return temp_date.toISOString();
   }
 
@@ -235,7 +234,6 @@ export class NewEventFormComponent implements OnInit {
    * @returns correct length of arg (has to be 2 for dateobject)
    */
   checkDoubleDigits(arg){
-    console.log(String(arg).length);
     if (String(arg).length == 1){
       arg = "0" + arg
     }

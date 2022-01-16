@@ -29,15 +29,12 @@ export class DataTableComponent implements OnInit {
    * Fetches all persons from the database
    */
   getAllPersons() {
-
     this.subscription.add(this.personService.getAllPersons().subscribe((persons: Person[]) => {
       this.persons = persons;
-      console.log(persons);
       setTimeout(() => {
         this.loadingIndicator = false;
       }, 1500);
     }));
-    console.log(this.persons)
     
   }
 
@@ -47,10 +44,11 @@ export class DataTableComponent implements OnInit {
    */
   onActivate(event) {
     if(event.type == 'click') {
-        console.log(event.row);
         const modalNewEvent = this.modalService.open(EditPersonModalComponent);
         modalNewEvent.componentInstance.clickInfo = event;
+        modalNewEvent.dismissed.subscribe(r =>{
+          this.getAllPersons()
+        })
     }
+  }
 }
-}
-

@@ -10,7 +10,6 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router, private apiService: AuthenticationService) {}
 
   canActivate(): Observable<boolean> {
-    console.log('testing');
       return this.apiService.isLoggedIn()
         .pipe(
           map(response => {
@@ -23,8 +22,6 @@ export class AuthGuard implements CanActivate {
             },
           ),
           catchError(error => {
-            console.log('error');
-            console.log(error);
             this.router.navigateByUrl('/auth/login');
             return of(false);
           }),

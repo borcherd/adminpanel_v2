@@ -49,9 +49,7 @@ export class EditPersonFormComponent implements OnInit {
    * function called when delete button is pressed (delete)
    */
   deletePerson(){
-    console.log(this.clickInfoInput.row.personId)
     this.subscription.add(this.personService.deletePerson(this.clickInfoInput.row.personId).subscribe((person: Person)=>{
-      console.log(this.person);
       Swal.fire({
         title: 'Succes!',
         text: 'Persoon verwijderd',
@@ -62,8 +60,8 @@ export class EditPersonFormComponent implements OnInit {
         showConfirmButton:false,
         timer:1113000
       })
+      this.submitCloseEvent.emit(2)
     }))
-    this.submitCloseEvent.emit(2)
   }
 
   /**
@@ -86,10 +84,9 @@ export class EditPersonFormComponent implements OnInit {
    */
   updatePerson(person: Person) {
     this.subscription.add(this.personService.updatePerson(this.clickInfoInput.row.personId, person).subscribe((Response: Person)=>{
-      console.log(Response)
       Swal.fire({
         title: 'Succes!',
-        text: 'Persoon geüpdate',
+        text: 'Persoon aangepast',
         icon: 'success',
         confirmButtonText: 'Cool',
         toast: true,
@@ -98,7 +95,6 @@ export class EditPersonFormComponent implements OnInit {
         timer:1113000
       })
       this.submitCloseEvent.emit(1)
-
     }))
   }
 }

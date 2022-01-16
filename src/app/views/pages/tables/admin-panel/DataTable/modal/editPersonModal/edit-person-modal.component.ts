@@ -17,17 +17,6 @@ export class EditPersonModalComponent extends NgbModal implements OnInit {
    * closes the modal
    */
   modalClose(event){
-    switch (event) {
-      case 1:
-        console.log("person updated")
-        break;
-      case 2:
-        console.log("person deleted")
-        break;
-      case 2:
-        console.log("erroor")
-        break;
-    }
     this.dismissAll();
   }
  
