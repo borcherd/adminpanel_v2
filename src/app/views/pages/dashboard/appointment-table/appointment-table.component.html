@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-md-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Overzicht Afspraken</h6>
+          <div class="table-responsive">
+            <ngx-datatable
+              class="bootstrap"
+              [rows]="appointments"
+              [loadingIndicator]="loadingIndicator"
+              [columnMode]="ColumnMode.force"
+              [footerHeight]="50"
+              [limit]="5"
+              rowHeight="auto"
+            >
+              <ngx-datatable-column name="startDate"></ngx-datatable-column>
+              <ngx-datatable-column name="endDate"></ngx-datatable-column>
+              <ngx-datatable-column name="customer"></ngx-datatable-column>
+              <ngx-datatable-column name="info"></ngx-datatable-column>              
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
