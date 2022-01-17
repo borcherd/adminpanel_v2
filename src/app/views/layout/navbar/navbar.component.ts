@@ -1,17 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef, Inject, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Inject, Renderer2, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PersonService } from 'src/app/services/person.service';
 import { Person } from 'src/app/models/person';
-import { ProfilePicture } from 'src/app/models/profilePicture';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
   currentUser: Person;
@@ -23,10 +22,12 @@ export class NavbarComponent implements OnInit {
     private apiService: PersonService
   ) { }
 
-
-
   ngOnInit(): void {
     this.getUser()
+  }
+  
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   /**

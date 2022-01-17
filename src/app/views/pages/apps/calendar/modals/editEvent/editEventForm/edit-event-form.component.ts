@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EventClickArg } from '@fullcalendar/core';
 import { Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   selector: 'app-edit-event-form',
   templateUrl: './edit-event-form.component.html'
 })
-export class EditEventFormComponent implements OnInit {
+export class EditEventFormComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   private utils: Utils = new Utils();
 
@@ -29,6 +29,10 @@ export class EditEventFormComponent implements OnInit {
   ngOnInit() {
     this.getCurrentUser();
     this.initForms();
+  }
+  
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   /**

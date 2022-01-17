@@ -1,7 +1,4 @@
-import { Subscription } from "rxjs";
 import { Appointment } from "../models/appointment";
-import { AppointmentService } from "../services/appointment.service";
-import { PersonService } from "../services/person.service";
 
 export class Utils {
     

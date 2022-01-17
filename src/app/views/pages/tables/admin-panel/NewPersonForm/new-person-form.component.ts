@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Person } from 'src/app/models/person';
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
   templateUrl: './new-person-form.component.html',
   styleUrls: ['./new-person-form.component.scss']
 })
-export class NewPersonFormComponent implements OnInit {
+export class NewPersonFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
   
   private subscription: Subscription = new Subscription();
@@ -20,6 +20,10 @@ export class NewPersonFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initaliseForm();
+  }
+  
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   /**

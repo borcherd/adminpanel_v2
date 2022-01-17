@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { EditPersonModalComponent } from './modal/editPersonModal/edit-person-mo
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss']
 })
-export class DataTableComponent implements OnInit {
+export class DataTableComponent implements OnInit, OnDestroy {
   loadingIndicator = true;
   reorderable = true;
   ColumnMode = ColumnMode;
@@ -23,6 +23,10 @@ export class DataTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllPersons();
+  }
+  
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   /**

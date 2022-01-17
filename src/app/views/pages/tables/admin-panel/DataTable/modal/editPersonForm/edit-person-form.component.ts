@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Person } from 'src/app/models/person';
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   selector: 'app-edit-person-form',
   templateUrl: './edit-person-form.component.html'
 })
-export class EditPersonFormComponent implements OnInit {
+export class EditPersonFormComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   @Output() submitCloseEvent = new EventEmitter<number>();
   @Input() clickInfoInput:any;
@@ -24,6 +24,10 @@ export class EditPersonFormComponent implements OnInit {
   ngOnInit(): void {
     this.person = this.clickInfoInput['row']
     this.initForm();
+  }
+  
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   /**

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DateSelectArg } from '@fullcalendar/angular';
 import { NgbDateStruct, NgbTimepickerConfig, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
   selector: 'app-new-event-form',
   templateUrl: './new-event-form.component.html',
 })
-export class NewEventFormComponent implements OnInit {
+export class NewEventFormComponent implements OnInit, OnDestroy {
   currentUser: Person;
   selectedDate: NgbDateStruct;
   private subscription: Subscription = new Subscription();
@@ -41,6 +41,10 @@ export class NewEventFormComponent implements OnInit {
   ngOnInit() {
     this.fetchAllData();
     this.initForm();
+  }
+  
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   fetchAllData(){
