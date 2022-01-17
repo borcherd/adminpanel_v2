@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { ErrorPageComponent } from './views/pages/unused/error-page/error-page.component';
+import { ErrorPageComponent } from './views/pages/error-page/error-page.component';
 
 
 @NgModule({
