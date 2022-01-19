@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ColumnMode } from '@swimlane/ngx-datatable';
+import { ColumnMode, DatatableComponent } from '@swimlane/ngx-datatable';
 import { Subscription } from 'rxjs';
 import { Person } from 'src/app/models/person';
 import { PersonService } from 'src/app/services/person.service';
@@ -12,10 +12,12 @@ import { EditPersonModalComponent } from './modal/editPersonModal/edit-person-mo
   styleUrls: ['./data-table.component.scss']
 })
 export class DataTableComponent implements OnInit, OnDestroy {
+  @ViewChild(DatatableComponent) table: DatatableComponent;
   loadingIndicator = true;
   reorderable = true;
   ColumnMode = ColumnMode;
   persons: Person[]
+  temp:Person[];
   
   private subscription: Subscription = new Subscription();
 
@@ -35,6 +37,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
   getAllPersons() {
     this.subscription.add(this.personService.getAllPersons().subscribe((persons: Person[]) => {
       this.persons = persons;
+      this.temp = [...persons]
       setTimeout(() => {
         this.loadingIndicator = false;
       }, 1500);
@@ -54,5 +57,19 @@ export class DataTableComponent implements OnInit, OnDestroy {
           this.getAllPersons()
         })
     }
+  }
+
+  /**
+   * function to filter the existing persons on name
+   * @param event containing the text to filter 
+   */
+  updateFilter(event) {
+    const val = event.target.value.toLowerCase();
+
+    const temp = this.temp.filter(function (d) {
+      return d.firstName.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+    this.persons = temp;
+    this.table.offset = 0;
   }
 }

@@ -1,6 +1,4 @@
 -slow when creating new appointment (dus niet goed voor refreshen) ? kobe
--dashboard
 -afbeelding uploaden ? kobe
 -faceid en shit ? kobe
--getcurrentuser om appointments per user te krijgen //getappointmentsbyuserid voor wouta
--datatable searchable maken
+=> misschien een endpoint maken om de appointments per userid op te vragen, telkens getcurrentuser callen om appointments te krijgen meh

@@ -16,7 +16,7 @@ export const MENU: MenuItem[] = [
     link: '/apps/calendar',
   },
   {
-    label: 'Table',
+    label: 'Admin panel',
     icon: 'layout',
     link: '/tables/admin-panel'
   },
