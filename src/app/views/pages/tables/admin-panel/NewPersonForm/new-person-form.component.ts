@@ -117,7 +117,10 @@ export class NewPersonFormComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
-      phoneNumber: new FormControl('',Validators.required),
+      phoneNumber: new FormControl('',Validators.compose([
+        Validators.required,
+        Validators.pattern('[- +()0-9]+')
+      ])),
       role: new FormControl('',Validators.required),
       company: new FormControl('')
     })

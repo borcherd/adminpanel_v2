@@ -3,8 +3,14 @@
       <div class="card">
         <div class="card-body">
           <h6 class="card-title">Overzicht werknemers/klanten (klik om te bewerken)</h6>
-          <div class="table-responsive">
+          <input
+          type="text"
+          style="padding:8px;margin:15px auto; width:30%;"
+          placeholder="filter op naam..."
+          (keyup)="updateFilter($event)"
+          />          
             <ngx-datatable
+              #table
               class="bootstrap"
               [rows]="persons"
               [loadingIndicator]="loadingIndicator"
@@ -14,15 +20,42 @@
               rowHeight="auto"
               (activate)="onActivate($event)"
             >
-              <ngx-datatable-column name="personId">ID</ngx-datatable-column>
-              <ngx-datatable-column name="role">Rol</ngx-datatable-column>
-              <ngx-datatable-column name="FirstName">Voornaam</ngx-datatable-column>
-              <ngx-datatable-column name="lastName">Achternaam</ngx-datatable-column>
-              <ngx-datatable-column name="email"></ngx-datatable-column>
-              <ngx-datatable-column name="gsm"></ngx-datatable-column>
-              <ngx-datatable-column name="company"></ngx-datatable-column>
+            <ngx-datatable-column name="ID">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.personId}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Rol">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.role}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Voornaam">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.firstName}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Naam">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.lastName}} 
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Email">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.email}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Gsm">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.gsm}} 
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Bedrijf">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.company}} 
+              </ng-template>
+            </ngx-datatable-column>
             </ngx-datatable>
-          </div>
         </div>
       </div>
     </div>

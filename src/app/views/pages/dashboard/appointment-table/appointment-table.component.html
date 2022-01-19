@@ -6,17 +6,44 @@
           <div class="table-responsive">
             <ngx-datatable
               class="bootstrap"
-              [rows]="appointments"
+              [rows]="appointments "
               [loadingIndicator]="loadingIndicator"
               [columnMode]="ColumnMode.force"
               [footerHeight]="50"
               [limit]="5"
               rowHeight="auto"
             >
-              <ngx-datatable-column name="startDate"></ngx-datatable-column>
-              <ngx-datatable-column name="endDate"></ngx-datatable-column>
-              <ngx-datatable-column name="customer"></ngx-datatable-column>
-              <ngx-datatable-column name="info"></ngx-datatable-column>              
+
+            <ngx-datatable-column name="Tijdstip">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.startDate}} - {{row.endDate}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Klant">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.customer.firstName}} {{row.customer.lastName}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Bedrijf">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.customer.company}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Personeel">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.employee.firstName}} {{row.employee.lastName}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Info">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.info}}
+              </ng-template>
+            </ngx-datatable-column>
+
             </ngx-datatable>
           </div>
         </div>
