@@ -81,7 +81,16 @@ export class NewPersonFormComponent implements OnInit, OnDestroy {
   verifyUser(person: Person){
     this.subscription.add(this.personService.getPersonByEmail(person.email).subscribe((response:Person)=>{
       if (response != null) {
-        console.log("invalid email")
+        Swal.fire({
+          title: 'Failed',
+          text: 'Er is al een persoon met dit email adres',
+          icon: 'error',
+          confirmButtonText: 'Cool',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton:false,
+          timer:1113000
+        }) 
       } else {
         /* if (this.imageSrc) {
           this.checkImageSize(person);
