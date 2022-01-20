@@ -62,7 +62,7 @@ export class EditPersonFormComponent implements OnInit, OnDestroy {
         toast: true,
         position: 'top-end',
         showConfirmButton:false,
-        timer:1113000
+        timer:5000
       })
       this.submitCloseEvent.emit(2)
     }))
@@ -96,7 +96,7 @@ export class EditPersonFormComponent implements OnInit, OnDestroy {
         toast: true,
         position: 'top-end',
         showConfirmButton:false,
-        timer:1113000
+        timer:5000
       })
       this.submitCloseEvent.emit(1)
     }))

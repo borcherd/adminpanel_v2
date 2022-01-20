@@ -85,11 +85,10 @@ export class NewPersonFormComponent implements OnInit, OnDestroy {
           title: 'Failed',
           text: 'Er is al een persoon met dit email adres',
           icon: 'error',
-          confirmButtonText: 'Cool',
           toast: true,
           position: 'top-end',
           showConfirmButton:false,
-          timer:1113000
+          timer:5500
         }) 
       } else {
         /* if (this.imageSrc) {
@@ -107,7 +106,7 @@ export class NewPersonFormComponent implements OnInit, OnDestroy {
             toast: true,
             position: 'top-end',
             showConfirmButton:false,
-            timer:1113000
+            timer:550
           }) 
           window.location.reload();
         }))

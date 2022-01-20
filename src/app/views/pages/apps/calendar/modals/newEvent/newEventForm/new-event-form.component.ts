@@ -149,9 +149,8 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
    * registers a new event (and if needed a new customer) and pushes them to the database
    */
   onSubmit(){
-    let appointment = new Appointment();
     if(this.customer_firstName != null){
-      const customer = this.createNewCustomer();
+      this.createNewCustomer();
     }else{
       this.createNewEvent();
     }
@@ -208,7 +207,7 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
         toast: true,
         position: 'top-end',
         showConfirmButton:false,
-        timer:1113000
+        timer:5000
       }) 
     }));
   }  

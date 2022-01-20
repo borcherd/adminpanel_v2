@@ -3,12 +3,7 @@
       <div class="card">
         <div class="card-body">
           <h6 class="card-title">Overzicht werknemers/klanten (klik om te bewerken)</h6>
-          <input
-          type="text"
-          style="padding:8px;margin:15px auto; width:30%;"
-          placeholder="filter op naam..."
-          (keyup)="updateFilter($event)"
-          />          
+          <input type="text" class="form-control" (keyup)="updateFilter($event)" placeholder="filter op naam..." >      
             <ngx-datatable
               #table
               class="bootstrap"

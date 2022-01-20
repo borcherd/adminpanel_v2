@@ -29,7 +29,7 @@ export class Utils {
         this.checkDoubleDigits(date.day) + "T" +
         this.checkDoubleDigits(time.hour) + ":" + 
         this.checkDoubleDigits(time.minute) + ":" +
-        "00" + "+01:00";
+        "00" + "+02:00";
         const temp_date = new Date(Date.parse(DateTime));
         temp_date.setHours(temp_date.getHours() + 2);
         return temp_date.toISOString();

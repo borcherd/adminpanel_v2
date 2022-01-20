@@ -94,7 +94,7 @@ export class EditEventFormComponent implements OnInit, OnDestroy {
             toast: true,
             position: 'top-end',
             showConfirmButton:false,
-            timer:1113000
+            timer:5500
           }) 
           this.submitCloseEvent.emit(1)
 
@@ -116,7 +116,7 @@ export class EditEventFormComponent implements OnInit, OnDestroy {
         toast: true,
         position: 'top-end',
         showConfirmButton:false,
-        timer:1113000
+        timer:5500
       }) 
       this.submitCloseEvent.emit(2)
 
