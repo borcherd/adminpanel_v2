@@ -17,7 +17,8 @@ export class EditEventFormComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   private utils: Utils = new Utils();
 
-  @Output() submitCloseEvent = new EventEmitter<number>();
+  @Output() submitDeleteEvent = new EventEmitter<Number>();
+  @Output() submitUpdateEvent = new EventEmitter<[number, Appointment]>();
   @Input() clickInfoInput: EventClickArg;
 
   formEvent: FormGroup;
@@ -85,20 +86,7 @@ export class EditEventFormComponent implements OnInit, OnDestroy {
           this.formEvent.controls['description'].value,
           this.currentUser, Rperson
         )
-        this.subscription.add(this.appointmentService.updateAppointment(Rappointment.appointmentId, updated).subscribe((Rappointment2:Appointment)=>{
-          Swal.fire({
-            title: 'Succes!',
-            text: 'Evenement aangepast',
-            icon: 'success',
-            confirmButtonText: 'Cool',
-            toast: true,
-            position: 'top-end',
-            showConfirmButton:false,
-            timer:5500
-          }) 
-          this.submitCloseEvent.emit(1)
-
-        }))
+        this.submitUpdateEvent.emit([Rappointment.appointmentId, updated])
       }))
     }))
   }
@@ -107,19 +95,6 @@ export class EditEventFormComponent implements OnInit, OnDestroy {
    * deletes the selected appointment
    */
   onDelete(){
-    this.subscription.add(this.appointmentService.deleteAppointment(Number(this.clickInfoInput.event.id)).subscribe((appointment:Appointment)=>{
-      Swal.fire({
-        title: 'Succes!',
-        text: 'Evenement verwijderd',
-        icon: 'success',
-        confirmButtonText: 'Cool',
-        toast: true,
-        position: 'top-end',
-        showConfirmButton:false,
-        timer:5500
-      }) 
-      this.submitCloseEvent.emit(2)
-
-    }))
+    this.submitDeleteEvent.emit(Number(this.clickInfoInput.event.id) )
   }
 }

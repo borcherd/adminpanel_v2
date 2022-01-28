@@ -9,6 +9,7 @@ import { Utils } from 'src/app/utils/utils';
 import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-event-modal.component';
 import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
 import allLocales from '@fullcalendar/core/locales-all';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -97,17 +98,70 @@ export class CalendarComponent implements OnInit, OnDestroy {
       case 1:
         const modalNewEvent = this.modalService.open(newEventModalComponent);
         modalNewEvent.componentInstance.clickInfo = info;
-        modalNewEvent.dismissed.subscribe(r =>{
-          this.getAllAppointments()
+        modalNewEvent.dismissed.subscribe(rAppointment =>{
+          this.createAppointment(rAppointment);
         })
         break;
       case 2:
         const modalEditEvent = this.modalService.open(editEventModalComponent);
         modalEditEvent.componentInstance.clickInfo = info;
-        modalEditEvent.dismissed.subscribe(r =>{
-          this.getAllAppointments()
+        modalEditEvent.dismissed.subscribe(rEvent =>{
+          if (Array.isArray(rEvent)){
+            this.updateAppointment(rEvent)
+          }
+          else{
+            this.deleteAppointment(rEvent)
+          }
         })
         break;
     }
+  }
+
+  createAppointment(rAppointment){
+    this.subscription.add(this.appointmentService.createAppointment(rAppointment).subscribe(() => {
+      Swal.fire({
+        title: 'Succes!',
+        text: 'Evenement aangemaakt!',
+        icon: 'success',
+        confirmButtonText: 'Cool',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton:false,
+        timer:5000
+      })
+      this.getAllAppointments() 
+    }));
+  }
+
+  deleteAppointment(event){
+    this.subscription.add(this.appointmentService.deleteAppointment(event).subscribe((rAppointment:Appointment)=>{
+      Swal.fire({
+        title: 'Succes!',
+        text: 'Evenement verwijderd',
+        icon: 'success',
+        confirmButtonText: 'Cool',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton:false,
+        timer:5500
+      }) 
+      this.getAllAppointments()
+    }))
+  }
+
+  updateAppointment(event){
+    this.subscription.add(this.appointmentService.updateAppointment(event[0], event[1]).subscribe((Rappointment2:Appointment)=>{
+      Swal.fire({
+        title: 'Succes!',
+        text: 'Evenement aangepast',
+        icon: 'success',
+        confirmButtonText: 'Cool',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton:false,
+        timer:5500
+      }) 
+      this.getAllAppointments()
+    })) 
   }
 }

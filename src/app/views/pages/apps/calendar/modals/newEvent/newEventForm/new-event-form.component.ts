@@ -22,7 +22,7 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   utils: Utils = new Utils();
 
-  @Output() submitCloseEvent = new EventEmitter<number>();
+  @Output() submitCloseEvent = new EventEmitter<Appointment>();
 
   formEvent: FormGroup;
   newCustomerShown: boolean = false;
@@ -196,19 +196,6 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
     } else{
       appointment.customer = this.formEvent.controls['customer_list'].value;
     }
-    this.subscription.add(this.appointmentService.createAppointment(appointment).subscribe(() => {
-      Swal.fire({
-        title: 'Succes!',
-        text: 'Evenement aangemaakt!',
-        icon: 'success',
-        confirmButtonText: 'Cool',
-        toast: true,
-        position: 'top-end',
-        showConfirmButton:false,
-        timer:5000
-      }) 
-      //this.submitCloseEvent.emit(1)
-    }));
-
+    this.submitCloseEvent.emit(appointment)
   }  
 }

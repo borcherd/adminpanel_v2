@@ -1,2 +1,1 @@
--slow when creating new appointment (dus niet goed voor refreshen) ? kobe cancelled? naar calender gaan en daar pushen, swal en refresh
 -errors in console bij dashboard halp skeletonloader - chart direct initen, data achteraf meegeven
