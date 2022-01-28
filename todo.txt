@@ -1,1 +1,1 @@
--errors in console bij dashboard halp skeletonloader - chart direct initen, data achteraf meegeven
+ 

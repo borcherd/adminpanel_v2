@@ -22,6 +22,7 @@ export class PersonAnalysisComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.getData()
+    this.initChart()
   }
 
   ngOnDestroy(): void {
@@ -35,8 +36,8 @@ export class PersonAnalysisComponent implements OnInit, OnDestroy{
     this.subscription.add(this.personService.getAllPersonsByRole(Role.ADMIN).subscribe((admins: Person[])=>{
       this.subscription.add(this.personService.getAllPersonsByRole(Role.EMPLOYEE).subscribe((employees: Person[])=>{
         this.subscription.add(this.personService.getAllPersonsByRole(Role.CUSTOMER).subscribe((customers: Person[])=>{
-            this.initChart(admins, employees, customers)
-            //chart eerder init, data achteraf meegeven en updaten
+          this.pieChartOptions.nonAxisSeries = [admins.length, employees.length, customers.length]
+          //chart eerder init, data achteraf meegeven en updaten
         }))
       }))
     }))
@@ -48,10 +49,10 @@ export class PersonAnalysisComponent implements OnInit, OnDestroy{
    * @param employees in the company
    * @param customers in the company
    */
-  initChart(admins, employees, customers){
+  initChart(){
     this.pieChartOptions = {
-      nonAxisSeries: [admins.length,employees.length,customers.length], 
-      colors: ["#f77eb9", "#7ee5e5","#4d8af0"],
+      nonAxisSeries: [1,1,1], 
+      colors: ["#f77eb9", "#7987a1","#4d8af0"],
       chart: {
         height: 300,
         type: "pie"

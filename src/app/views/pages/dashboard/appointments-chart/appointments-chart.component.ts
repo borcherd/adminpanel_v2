@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { date } from 'ngx-custom-validators/src/app/date/validator';
 import { Subscription } from 'rxjs';
 import { AppointmentCount } from 'src/app/models/appointmentCount';
 import { AppointmentService } from 'src/app/services/appointment.service';
@@ -18,6 +19,7 @@ export class AppointmentsChartComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.initChart();
     this.getData();
   }
 
@@ -30,27 +32,40 @@ export class AppointmentsChartComponent implements OnInit, OnDestroy {
    */
   getData(){
     const dates = this.utils.getWeekRange()
-    this.subscription.add(this.appointmentService.getAppointmentsDayCountByDateRange(dates[0], dates[1]).subscribe((r: AppointmentCount[])=>{
-      this.initChart(r)
+    this.subscription.add(this.appointmentService.getAppointmentsDayCountByDateRange(dates[0], dates[1]).subscribe((rAppointmentCount: AppointmentCount[])=>{
+      const dates = this.utils.getWeekFullRange();
+      const counts = this.linkCountToDates(dates, rAppointmentCount)
+      console.log(dates)
+      console.log(counts)
+      this.barChartOptions.series = [
+        {
+          name: 'afspraken',
+          data: counts
+        }
+      ];
+      this.barChartOptions.xaxis = {
+        type: 'datetime',
+        categories: dates
+      }
       //chart eerder init, data achteraf meegeven en updaten
     }))
   }
 
   /**
    * initialises chart with the correct data
+   * loads in with basic data, then refreshes when async data is downloaded
    * @param appointmentCount retrieved from the database
    */
-  initChart(appointmentCount){
-    const dates = this.utils.getWeekFullRange();
-    const counts = this.linkCountToDates(dates, appointmentCount)
+  initChart(){
+    
      this.barChartOptions = {
       series: [
         {
           name: 'afspraken',
-          data: counts
+          data: [30,40,45,50,49,60,70,91,125]
         }
       ],
-      colors: ["#f77eb9"],
+      colors: ["#727cf5"],
       grid: {
         borderColor: "rgba(77, 138, 240, .1)",
         padding: {
@@ -64,7 +79,7 @@ export class AppointmentsChartComponent implements OnInit, OnDestroy {
       },
       xaxis: {
         type: 'datetime',
-        categories: dates
+        categories: ['01/01/1991','01/01/1992','01/01/1993','01/01/1994','01/01/1995','01/01/1996','01/01/1997', '01/01/1998','01/01/1999']
       }
       
     };
