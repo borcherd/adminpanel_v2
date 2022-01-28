@@ -154,7 +154,6 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
     }else{
       this.createNewEvent();
     }
-    this.submitCloseEvent.emit(1)
   }
 
   /**
@@ -174,7 +173,6 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
     customer.gsm = "000"; //todo: create control for phone number
     this.subscription.add(this.personService.createPerson(customer).subscribe((response: Person) => {
       this.createNewEvent(customer);
-      //reload page/datatable component when succes
     }))
   }
 
@@ -209,6 +207,8 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
         showConfirmButton:false,
         timer:5000
       }) 
+      //this.submitCloseEvent.emit(1)
     }));
+
   }  
 }

@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
-import { FeahterIconModule } from '../../../core/feather-icon/feather-icon.module';
 
 import { IconsComponent } from './icons.component';
 import { FeatherComponent } from './feather/feather.component';
 import { FlagComponent } from './flag/flag.component';
 import { MdiComponent } from './mdi/mdi.component';
+import { FeahterIconModule } from 'src/app/core/feather-icon/feather-icon.module';
 
 const routes: Routes = [
   {

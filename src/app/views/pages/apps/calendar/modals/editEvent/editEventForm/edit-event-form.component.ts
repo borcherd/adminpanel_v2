@@ -75,7 +75,7 @@ export class EditEventFormComponent implements OnInit, OnDestroy {
    */
   onSubmit(){
     this.subscription.add(this.appointmentService.getAppointmentById(Number(this.clickInfoInput.event.id)).subscribe((Rappointment: Appointment)=>{  
-      this.subscription.add(this.personService.getPersonById(Rappointment.customer.personId).subscribe((r:Person)=>{
+      this.subscription.add(this.personService.getPersonById(Rappointment.customer.personId).subscribe((Rperson:Person)=>{
         const startDateTime = this.utils.createDateTime(this.formEvent.controls['startDate'].value, this.formEvent.controls['startTime'].value)
         const endDateTime = this.utils.createDateTime(this.formEvent.controls['endDate'].value, this.formEvent.controls['endTime'].value)
         const updated = new Appointment(
@@ -83,9 +83,9 @@ export class EditEventFormComponent implements OnInit, OnDestroy {
           endDateTime, 
           true,
           this.formEvent.controls['description'].value,
-          this.currentUser, r
+          this.currentUser, Rperson
         )
-        this.subscription.add(this.appointmentService.updateAppointment(Rappointment.appointmentId, updated).subscribe((r:Appointment)=>{
+        this.subscription.add(this.appointmentService.updateAppointment(Rappointment.appointmentId, updated).subscribe((Rappointment2:Appointment)=>{
           Swal.fire({
             title: 'Succes!',
             text: 'Evenement aangepast',

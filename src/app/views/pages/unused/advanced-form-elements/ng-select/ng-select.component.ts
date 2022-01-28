@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Person } from 'src/app/models/person';
 
-import { PeoplesData, Person } from '../../../../core/dummy-datas/peoples.data';
 
 @Component({
   selector: 'app-ng-select',
@@ -29,9 +29,6 @@ export class NgSelectComponent implements OnInit {
 
     // simple array
     this.simpleItems = [true, 'Two', 3];
-
-    // array of objects
-    this.people = PeoplesData.peoples;
 
   }
 

@@ -1,5 +1,2 @@
--slow when creating new appointment (dus niet goed voor refreshen) ? kobe
--afbeelding uploaden ? kobe
--faceid en shit ? kobe
--errors in console bij dashboard halp
-=> misschien een endpoint maken om de appointments per userid op te vragen, telkens getcurrentuser callen om appointments te krijgen meh
+-slow when creating new appointment (dus niet goed voor refreshen) ? kobe cancelled? naar calender gaan en daar pushen, swal en refresh
+-errors in console bij dashboard halp skeletonloader - chart direct initen, data achteraf meegeven

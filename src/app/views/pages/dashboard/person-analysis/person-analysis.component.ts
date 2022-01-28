@@ -36,6 +36,7 @@ export class PersonAnalysisComponent implements OnInit, OnDestroy{
       this.subscription.add(this.personService.getAllPersonsByRole(Role.EMPLOYEE).subscribe((employees: Person[])=>{
         this.subscription.add(this.personService.getAllPersonsByRole(Role.CUSTOMER).subscribe((customers: Person[])=>{
             this.initChart(admins, employees, customers)
+            //chart eerder init, data achteraf meegeven en updaten
         }))
       }))
     }))

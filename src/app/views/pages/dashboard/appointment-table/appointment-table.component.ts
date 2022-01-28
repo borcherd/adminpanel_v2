@@ -28,16 +28,16 @@ export class AppointmentTableComponent implements OnInit {
    * gets all data from the database
    */
   getData(){
-    this.subscription.add(this.appointmentService.getAllAppointments().subscribe((r: Appointment[])=>{
+    this.subscription.add(this.appointmentService.getAllAppointments().subscribe((rAppointment: Appointment[])=>{
       let index = 0;
       let index2 = 0;
-      r.forEach(element => {
-        this.subscription.add(this.personService.getPersonById(element.customer.personId).subscribe((p:Person)=>{
-          r[index].customer = p;
+      rAppointment.forEach(element => {
+        this.subscription.add(this.personService.getPersonById(element.customer.personId).subscribe((rPerson:Person)=>{
+          rAppointment[index].customer = rPerson;
           index ++;
         }))
-        this.subscription.add(this.personService.getPersonById(element.employee.personId).subscribe((p:Person)=>{
-          r[index].employee = p;
+        this.subscription.add(this.personService.getPersonById(element.employee.personId).subscribe((rPerson2:Person)=>{
+          rAppointment[index].employee = rPerson2;
           index2 ++;
         }))
         element.startDate = element.startDate.substring(0, 19)
@@ -45,7 +45,7 @@ export class AppointmentTableComponent implements OnInit {
 
       });
 
-      this.appointments = r;
+      this.appointments = rAppointment;
       setTimeout(() => {
         this.loadingIndicator = false;
       }, 5000);    

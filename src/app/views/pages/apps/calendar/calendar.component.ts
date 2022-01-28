@@ -8,6 +8,7 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 import { Utils } from 'src/app/utils/utils';
 import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-event-modal.component';
 import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
+import allLocales from '@fullcalendar/core/locales-all';
 
 
 @Component({
@@ -29,6 +30,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     slotMinTime: "05:00:00",
     slotMaxTime:"22:00:00",
     slotDuration: '00:10:00',
+    locales: allLocales,
+    locale:"nl",
     weekends: true,
     editable: true,
     selectable: true,

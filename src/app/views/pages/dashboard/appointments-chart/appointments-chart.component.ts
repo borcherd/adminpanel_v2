@@ -32,6 +32,7 @@ export class AppointmentsChartComponent implements OnInit, OnDestroy {
     const dates = this.utils.getWeekRange()
     this.subscription.add(this.appointmentService.getAppointmentsDayCountByDateRange(dates[0], dates[1]).subscribe((r: AppointmentCount[])=>{
       this.initChart(r)
+      //chart eerder init, data achteraf meegeven en updaten
     }))
   }
 

@@ -3,11 +3,9 @@ import { CommonModule } from '@angular/common';
 import { UiComponentsComponent } from './ui-components.component';
 import { AlertsComponent } from './alerts/alerts.component';
 import { Routes, RouterModule } from '@angular/router';
-import { CodePreviewModule } from '../../partials/code-preview/code-preview.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
-import { FeahterIconModule } from '../../../core/feather-icon/feather-icon.module';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -40,6 +38,8 @@ import { RatingComponent } from './rating/rating.component';
 import { TimepickerComponent } from './timepicker/timepicker.component';
 import { DatepickerComponent } from './datepicker/datepicker.component';
 import { TypeaheadComponent } from './typeahead/typeahead.component';
+import { FeahterIconModule } from 'src/app/core/feather-icon/feather-icon.module';
+import { CodePreviewModule } from 'src/app/views/partials/code-preview/code-preview.module';
 
 const routes: Routes = [
   {
