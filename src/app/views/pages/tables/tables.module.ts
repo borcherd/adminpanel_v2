@@ -11,6 +11,8 @@ import { EditPersonModalComponent } from './admin-panel/DataTable/modal/editPers
 import { EditPersonFormComponent } from './admin-panel/DataTable/modal/editPersonForm/edit-person-form.component';
 import { NewPersonFormComponent } from './admin-panel/NewPersonForm/new-person-form.component';
 import { DataTableComponent } from './admin-panel/DataTable/data-table.component';
+import { AdminGuardService } from 'src/app/services/admin-guard.service';
+import { RoleAuthorisationService } from 'src/app/services/role-auth.service';
 
 
 const routes: Routes = [
@@ -25,7 +27,11 @@ const routes: Routes = [
       },
       {
         path:'admin-panel',
-        component: AdminPanelComponent
+        data: {
+          role: 'admin',
+        },
+        component: AdminPanelComponent,
+        canActivate: [AdminGuardService],
       }
     ]
   }
@@ -39,6 +45,10 @@ const routes: Routes = [
     NgxDatatableModule,
     ReactiveFormsModule,
     FormsModule, CustomFormsModule
+  ],
+  providers: [
+    RoleAuthorisationService,
+    AdminGuardService,
   ]
 })
 export class TablesModule { }

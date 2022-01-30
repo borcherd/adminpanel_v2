@@ -13,6 +13,7 @@ import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorPageComponent } from './views/pages/unused/error-page/error-page.component';
+import { AdminGuardService } from './services/admin-guard.service';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { ErrorPageComponent } from './views/pages/unused/error-page/error-page.c
   ],
   providers: [
     AuthGuard,
+    AdminGuardService,
     {
       provide: HIGHLIGHT_OPTIONS, // https://www.npmjs.com/package/ngx-highlightjs
       useValue: {
