@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Person } from 'src/app/models/person';
+import { Role } from 'src/app/models/role';
 import { PersonService } from 'src/app/services/person.service';
 import { company } from 'src/app/views/constants';
 import Swal from 'sweetalert2';
@@ -64,7 +65,7 @@ export class NewPersonFormComponent implements OnInit, OnDestroy {
       this.form.value.email,
       this.form.value.firstName,
       this.form.value.name,null,null);
-    if (this.form.value.role == '1'){
+    if (this.form.value.role == Role.CUSTOMER){
       person.company = this.form.value.company;
     } else {
       person.company = company;
