@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { waitForAsync } from '@angular/core/testing';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DateSelectArg } from '@fullcalendar/angular';
 import { NgbDateStruct, NgbTimepickerConfig, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -22,7 +23,8 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   utils: Utils = new Utils();
 
-  @Output() submitCloseEvent = new EventEmitter<Appointment>();
+  @Output() submitCloseEventCustomerAppointment = new EventEmitter<[Appointment, Person]>();
+  @Output() submitCloseEventAppointment = new EventEmitter<Appointment>();
 
   formEvent: FormGroup;
   newCustomerShown: boolean = false;
@@ -149,10 +151,25 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
    * registers a new event (and if needed a new customer) and pushes them to the database
    */
   onSubmit(){
-    if(this.customer_firstName != null){
-      this.createNewCustomer();
-    }else{
-      this.createNewEvent();
+    const startDateTime = new Date(this.utils.createDateTime(this.formEvent.controls['startDate'].value, this.formEvent.controls['startTime'].value))
+    const endDateTime = new Date(this.utils.createDateTime(this.formEvent.controls['endDate'].value, this.formEvent.controls['endTime'].value))
+    if(endDateTime <= startDateTime){
+      Swal.fire({
+        title: 'Failed',
+        text: 'De startdatum moet voor de einddatum zijn',
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton:false,
+        timer:5500
+      }) 
+    }
+    else{
+      if(this.customer_firstName != null){
+        this.createNewCustomer();
+      }else{
+        this.createNewEvent();
+      } 
     }
   }
 
@@ -170,10 +187,8 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
       null); //faceid?
 
     customer.organization = company;
-    customer.gsm = "000"; //todo: create control for phone number
-    this.subscription.add(this.personService.createPerson(customer).subscribe((response: Person) => {
-      this.createNewEvent(customer);
-    }))
+    customer.gsm = "1"; //todo: create control for phone number
+    this.createNewEvent(customer)
   }
 
   /**
@@ -189,13 +204,17 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
       endDateTime,
       true,
       this.formEvent.controls['description'].value,
-      this.currentUser, //this.employe when logging in works
+      this.currentUser, 
       null)
-    if (customer = null){
-      appointment.customer = customer
+    if (customer != null){
+      console.log("customer != null")
+      this.submitCloseEventCustomerAppointment.emit([appointment, customer])
     } else{
+      console.log("customer == null")
       appointment.customer = this.formEvent.controls['customer_list'].value;
+      this.submitCloseEventAppointment.emit(appointment)
     }
-    this.submitCloseEvent.emit(appointment)
   }  
+  
+  
 }

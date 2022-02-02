@@ -10,6 +10,8 @@ import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-
 import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
 import allLocales from '@fullcalendar/core/locales-all';
 import Swal from 'sweetalert2';
+import { PersonService } from 'src/app/services/person.service';
+import { Person } from 'src/app/models/person';
 
 
 @Component({
@@ -45,7 +47,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   basicModalCloseResult: string = '';
   appointments: any[] = [];
 
-  constructor(private modalService: NgbModal, private appointmentService: AppointmentService,) {  }
+  constructor(private modalService: NgbModal, private appointmentService: AppointmentService, private personService: PersonService) {  }
 
   ngOnInit(): void {
     this.getAllAppointments();
@@ -98,8 +100,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
       case 1:
         const modalNewEvent = this.modalService.open(newEventModalComponent);
         modalNewEvent.componentInstance.clickInfo = info;
-        modalNewEvent.dismissed.subscribe(rAppointment =>{
-          this.createAppointment(rAppointment);
+        modalNewEvent.dismissed.subscribe(response =>{
+          if (Array.isArray(response)){
+            this.createCustomer(response[0], response[1])
+          }
+          else{
+            this.createAppointment(response);
+          }
         })
         break;
       case 2:
@@ -131,6 +138,28 @@ export class CalendarComponent implements OnInit, OnDestroy {
       })
       this.getAllAppointments() 
     }));
+  }
+
+  createCustomer( rAppointment: Appointment, rCustomer: Person){
+    //verify moet eigenlijk gebeuren wanneer modal nog open is, maar geeft canceled TODO
+    this.subscription.add(this.personService.getPersonByEmail(rCustomer.email).subscribe((response:Person)=>{
+      if (response != null) {
+        Swal.fire({
+          title: 'Failed',
+          text: 'Er is al een persoon met dit email adres',
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton:false,
+          timer:5500
+        })
+      } else {
+        this.subscription.add(this.personService.createPerson(rCustomer).subscribe((response: Person) => {
+          rAppointment.customer = rCustomer;
+          this.createAppointment(rAppointment)
+        }));
+      } 
+    }))
   }
 
   deleteAppointment(event){
