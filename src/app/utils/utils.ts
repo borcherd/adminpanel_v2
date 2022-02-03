@@ -55,12 +55,10 @@ export class Utils {
    * Get week range of current date
    */
    getWeekRange() {
-    const curr = new Date; // get current date s
-    const first = curr.getDate() - curr.getDay() + 1; // First day is the day of the month - the day of the week
-    const last = first + 5; // last day is the first day + 6
-
-    const firstday = this.formatDate(new Date(curr.setDate(first)));
-    const lastday = this.formatDate(new Date(curr.setDate(last)));
+    var curr = new Date(); // get current date
+    var first = curr.getDate() - curr.getDay() + 1; // First day is the day of the month - the day of the week
+    var lastday = this.formatDate(new Date(curr.setDate(first+ 6)).toUTCString());
+    var firstday = this.formatDate(new Date(curr.setDate(first)).toUTCString());
     return [firstday, lastday];
   }
 
