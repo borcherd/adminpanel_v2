@@ -5,14 +5,13 @@ import { NgbModal, NgbTimepickerConfig, NgbTimeStruct } from '@ng-bootstrap/ng-b
 import { Subscription } from 'rxjs';
 import { Appointment } from 'src/app/models/appointment';
 import { AppointmentService } from 'src/app/services/appointment.service';
-import { Utils } from 'src/app/utils/utils';
 import { editEventModalComponent } from './modals/editEvent/editEventModal/edit-event-modal.component';
 import { newEventModalComponent } from './modals/newEvent/newEventModal/new-event-modal.component';
 import allLocales from '@fullcalendar/core/locales-all';
 import Swal from 'sweetalert2';
 import { PersonService } from 'src/app/services/person.service';
 import { Person } from 'src/app/models/person';
-
+import { Utils } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-calendar',
@@ -22,6 +21,7 @@ import { Person } from 'src/app/models/person';
 export class CalendarComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   private utils: Utils = new Utils;
+  private currentUser: Person;
 
   calendarOptions: CalendarOptions = {
     headerToolbar: {
@@ -42,7 +42,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     dayMaxEvents: true,
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
-    eventDragMinDistance:10000 //disable dragging
+    eventDragMinDistance:10000, //disable dragging
+    dateClick: this.test.bind(this)
   };
   basicModalCloseResult: string = '';
   appointments: any[] = [];
@@ -50,27 +51,40 @@ export class CalendarComponent implements OnInit, OnDestroy {
   constructor(private modalService: NgbModal, private appointmentService: AppointmentService, private personService: PersonService) {  }
 
   ngOnInit(): void {
-    this.getAllAppointments();
+    this.getCurrentUser();
+    //this.getAllAppointments();
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
+  test(){
+    console.log("test")
+  }
+
+  getCurrentUser(){
+    this.subscription.add(this.personService.getCurrentUser().subscribe((employee: Person) => {
+      this.currentUser = employee;
+      this.getAppointments(); 
+    }));
+  }
+
   /**
-   * gets all appointments from the database
+   * gets all appointments for the current user 
    */
-  getAllAppointments(){
+  getAppointments(){
     this.calendarOptions.events = null
     const appointments: any[] = [];
-    this.subscription.add(this.appointmentService.getAllAppointments().subscribe((appointments2: Appointment[])=>{
-      appointments2.forEach(appointment => {
+    const weekRange = this.utils.getWeekRange()
+    this.subscription.add(this.personService.getAppointments(this.currentUser.personId, weekRange[0], weekRange[1]).subscribe((rAppointment:Appointment[])=>{
+      rAppointment.forEach(appointment => {
         const translated = this.utils.translateAppointment(appointment)
         appointments.push(translated)
       });
       this.appointments = appointments;
       this.calendarOptions.events = this.appointments
-    }))  
+    }))
   }
 
   /**
@@ -103,9 +117,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
         modalNewEvent.dismissed.subscribe(response =>{
           if (Array.isArray(response)){
             this.createCustomer(response[0], response[1])
+          }else if (typeof(response) == "object"){
+            this.createAppointment(response);
           }
           else{
-            this.createAppointment(response);
+            console.log("canceled")
           }
         })
         break;
@@ -115,9 +131,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
         modalEditEvent.dismissed.subscribe(rEvent =>{
           if (Array.isArray(rEvent)){
             this.updateAppointment(rEvent)
-          }
-          else{
+          }else if (typeof(rEvent) == "number"){
             this.deleteAppointment(rEvent)
+          }else{
+            console.log("canceled")
           }
         })
         break;
@@ -136,7 +153,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         showConfirmButton:false,
         timer:5000
       })
-      this.getAllAppointments() 
+      this.getAppointments() 
     }));
   }
 
@@ -174,7 +191,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         showConfirmButton:false,
         timer:5500
       }) 
-      this.getAllAppointments()
+      this.getAppointments()
     }))
   }
 
@@ -190,7 +207,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         showConfirmButton:false,
         timer:5500
       }) 
-      this.getAllAppointments()
+      this.getAppointments()
     })) 
   }
 }

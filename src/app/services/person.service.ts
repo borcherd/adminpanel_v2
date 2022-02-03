@@ -242,4 +242,25 @@ export class PersonService {
       return null;
     }));
   }
+
+  /**
+   * gets all appointments for personid within certain dates
+   */
+
+  getAppointments(id, startDate, endDate): Observable<Appointment[]> {
+    const composedUrl = 'api/v1/persons/' + id + "/appointments/start/" + startDate + "/end/" +endDate 
+    return this.httpClient.get<Appointment[]>(url + composedUrl,{
+      headers: basicHeaders,
+      withCredentials:true
+    }).pipe(
+      map((values: any[]) => {
+        const appointments = [];
+        values.forEach(value => {
+          const newAppointment = new Appointment();
+          newAppointment.toMapped(value);
+          appointments.push(newAppointment);
+        });
+        return appointments;
+      }));
+  }
 }
