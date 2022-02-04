@@ -51,7 +51,9 @@ export class Utils {
   }
 
   /**
-   * Get week range of current date
+   * gets the first and last date of the week containing this date
+   * @param date in the week 
+   * @returns first and last day of week
    */
    getWeekRange(date = null) {
     if (date == null){
@@ -67,6 +69,11 @@ export class Utils {
     return [firstday, lastday];
   }
 
+  /**
+   * gets the first and last date of the month containing the date
+   * @param date this month
+   * @returns the first and last date of the month
+   */
   getMonthRange(date = null){
     if (date == null){
       var curr = new Date()
@@ -78,6 +85,11 @@ export class Utils {
     return [firstDay, lastDay]
   }
 
+  /**
+   * gets the date of the day after the date
+   * @param date 
+   * @returns the date with the date +1
+   */
   getDayRange(date = null){
     if (date == null){
       var curr = new Date()
@@ -92,7 +104,10 @@ export class Utils {
     return [firstDay, lastDay]
   }
 
-
+  /**
+   * gets the weeks full range, every date in the current week
+   * @returns an array of dates
+   */
   getWeekFullRange(){
     const curr = new Date; // get current date s
     const dates = [];

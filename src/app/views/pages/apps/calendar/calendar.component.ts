@@ -29,32 +29,31 @@ export class CalendarComponent implements OnInit, OnDestroy {
     customButtons: {
       previousButton: {
         text: '<',
-        click: this.prev.bind(this)
-
+        click: this.calendarButton.bind(this, "prev")
       },
       todayButton: {
         text: 'Today',
-        click: this.today.bind(this)
+        click: this.calendarButton.bind(this, "today")
       },
       nextButton: {
         text: '>',
-        click: this.next.bind(this)
+        click: this.calendarButton.bind(this,"next")
       },
       monthButton: {
         text: 'Month',
-        click: this.month.bind(this)
+        click: this.calendarButton.bind(this,"month")
       },
       weekButton: {
         text: 'Week',
-        click: this.week.bind(this)
+        click: this.calendarButton.bind(this,"week")
       },
       dayButton: {
         text: 'Day',
-        click: this.day.bind(this)
+        click: this.calendarButton.bind(this,"day")
       },
       listWeekButton: {
         text: 'List',
-        click: this.listWeek.bind(this)
+        click: this.calendarButton.bind(this,"list")
       }
     },
     headerToolbar: {
@@ -119,10 +118,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }))
   }
 
+  /**
+   * gets the first and last date on the current calendar
+   * @returns array of dates
+   */
   getDates(){
     const view = this.calendarApi.view.type;
     const currentDate = this.calendarApi.getDate();
-    console.log(view)
     var range;
     switch (view) {
       case "timeGridWeek":
@@ -138,7 +140,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
         range = this.utils.getWeekRange(currentDate)
         break;
     }
-    console.log(range)
     return range
   }
 
@@ -283,39 +284,34 @@ export class CalendarComponent implements OnInit, OnDestroy {
     })) 
   }
 
-  prev(){
-    this.calendarApi.prev();
+  /**
+   * general function when a button on the callender is pressed
+   * @param data contains which button is pressed 
+   */
+  calendarButton(data){
+    switch (data) {
+      case "prev":
+        this.calendarApi.prev();
+        break;
+      case "today":
+        this.calendarApi.today();
+        break;
+      case "next":
+        this.calendarApi.next();
+      break;
+      case "month":
+        this.calendarApi.changeView("dayGridMonth");
+      break;
+      case "week":
+        this.calendarApi.changeView("timeGridWeek");
+      break;
+      case "day":
+        this.calendarApi.changeView("timeGridDay");
+      break;
+      case "list":
+        this.calendarApi.changeView("listWeek");
+      break;
+    }
     this.getAppointments();
   }
-
-  today(){
-    this.calendarApi.today();
-    this.getAppointments();
-  }
-
-  next(){
-    this.calendarApi.next();
-    this.getAppointments();
-  } 
-
-  month(){
-    this.calendarApi.changeView("dayGridMonth");
-    this.getAppointments();
-  }
-  
-  week(){
-    this.calendarApi.changeView("timeGridWeek");
-    this.getAppointments();
-  }
-
-  day(){
-    this.calendarApi.changeView("timeGridDay");
-    this.getAppointments();
-  }
-
-  listWeek(){
-    this.calendarApi.changeView("listWeek");
-    this.getAppointments();
-  }
-  
 }
