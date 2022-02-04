@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DateSelectArg } from '@fullcalendar/angular';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -10,15 +11,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class newEventModalComponent extends NgbModal implements OnInit{
 
     modalcomponent: NgbModal;
+    clickInfo: DateSelectArg;
 
   ngOnInit() {
   }
 
+
   /**
    * closes the modal
    */
-  modalClose(){
-    this.dismissAll();
+  modalClose(event){
+    this.dismissAll(event);
   }
 
  }

@@ -13,6 +13,11 @@ import { NgApexchartsModule } from "ng-apexcharts";
 import { ChartsModule } from 'ng2-charts';
 
 import { DashboardComponent } from './dashboard.component';
+import { PersonAnalysisComponent } from './person-analysis/person-analysis.component';
+import { AppointmentTableComponent } from './appointment-table/appointment-table.component';
+import { AppointmentsChartComponent } from './appointments-chart/appointments-chart.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
 
 const routes: Routes = [
   {
@@ -22,7 +27,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [DashboardComponent, AppointmentsChartComponent, PersonAnalysisComponent, AppointmentTableComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -31,7 +36,9 @@ const routes: Routes = [
     NgbDropdownModule,
     NgbDatepickerModule,
     NgApexchartsModule,
-    ChartsModule
+    ChartsModule,
+    NgxDatatableModule,
+
   ]
 })
 export class DashboardModule { }

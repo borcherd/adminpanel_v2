@@ -1,33 +1,31 @@
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
   <div>
-    <h4 class="mb-3 mb-md-0">Welcome to Dashboard</h4>
-  </div>
-  <div class="d-flex align-items-center flex-wrap text-nowrap">
-    <div class="input-group dashboard-date mr-2 mb-2 mb-md-0 d-md-none d-xl-flex">
-      <div class="input-group-prepend">
-        <button class="btn btn-outline-primary btn-icon calendar" type="button" (click)="d.toggle()">
-          <i data-feather="calendar" appFeatherIcon></i>
-        </button>
-      </div>
-      <input class="form-control" placeholder="yyyy-mm-dd"
-          name="dp" [(ngModel)]="currentDate" ngbDatepicker #d="ngbDatepicker">
-    </div>
-    <button type="button" class="btn btn-outline-info btn-icon-text mr-2 d-none d-md-block">
-      <i class="btn-icon-prepend" data-feather="download" appFeatherIcon></i>
-      Import
-    </button>
-    <button type="button" class="btn btn-outline-primary btn-icon-text mr-2 mb-2 mb-md-0">
-      <i class="btn-icon-prepend" data-feather="printer" appFeatherIcon></i>
-      Print
-    </button>
-    <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-      <i class="btn-icon-prepend" data-feather="download-cloud" appFeatherIcon></i>
-      Download Report
-    </button>
+    <h4 class="mb-3 mb-md-0">Dashboard</h4>
   </div>
 </div>
+<div>
+  <div class="row">
+    <div class="col-lg-7 col-xl-8 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <app-appointments-chart></app-appointments-chart>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5 col-xl-4 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <app-person-analysis></app-person-analysis>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <app-appointment-table></app-appointment-table>
+</div>
 
-<div class="row">
+<!-- <div class="row">
   <div class="col-12 col-xl-12 stretch-card">
     <div class="row flex-grow">
       <div class="col-md-4 grid-margin stretch-card">
@@ -165,9 +163,9 @@
       </div>
     </div>
   </div>
-</div> <!-- row -->
+</div>   -->
 
-<div class="row">
+<!-- <div class="row">
   <div class="col-12 col-xl-12 grid-margin stretch-card">
     <div class="card overflow-hidden">
       <div class="card-body">
@@ -215,9 +213,9 @@
       </div>
     </div>
   </div>
-</div> <!-- row -->
+</div>  -->
 
-<div class="row">
+ <!-- <div class="row">
   <div class="col-lg-7 col-xl-8 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
@@ -238,7 +236,6 @@
         </div>
         <p class="text-muted mb-4">Sales are activities related to selling or the number of goods or services sold in a given time period.</p>
         <div class="monthly-sales-chart-wrapper">
-          <!-- <canvas id="monthly-sales-chart"></canvas> -->
           <canvas baseChart 
             [datasets]="ng2BarChart1Data"
             [labels]="ng2BarChart1Labels"
@@ -288,9 +285,10 @@
       </div>
     </div>
   </div>
-</div> <!-- row -->
+</div> 
+ -->
 
-<div class="row">
+ <!--<div class="row">
   <div class="col-lg-5 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
     <div class="card">
       <div class="card-body">
@@ -468,4 +466,4 @@
       </div> 
     </div>
   </div>
-</div> <!-- row -->
+</div>  -->

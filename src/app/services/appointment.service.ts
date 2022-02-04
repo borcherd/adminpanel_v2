@@ -69,7 +69,6 @@ export class AppointmentService {
     return this.httpClient.get<Appointment>(url + 'api/v1/appointments/' + id, {
       headers: basicHeaders,
       withCredentials: true
-
     });
   }
 
@@ -148,7 +147,6 @@ export class AppointmentService {
         withCredentials: true
 
       }).pipe(map((value: any) => {
-        console.log(value);
         const appoint = new Appointment();
         appoint.toMapped(value);
         return appoint;

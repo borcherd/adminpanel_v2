@@ -1,6 +1,6 @@
 <div id="myModal" role="dialog" data-backdrop="static">
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Edit Event</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Afspraak aanpassen</h5>
     <button type="button" class="close" data-dismiss="modal" (click)="modalClose()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -8,7 +8,7 @@
   <div class="modal-body">
       <div class="card">
         <div class="card-body">
-            <app-edit-event-form></app-edit-event-form>
+            <app-edit-event-form  [clickInfoInput]="clickInfo" (submitDeleteEvent)="modalClose($event)" (submitUpdateEvent)="modalClose($event)"></app-edit-event-form>
 
         </div>
       </div>
