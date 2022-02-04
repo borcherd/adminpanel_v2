@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventApi, FullCalendarComponent } from '@fullcalendar/angular';
 import { NgbModal, NgbTimepickerConfig, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Appointment } from 'src/app/models/appointment';
@@ -19,15 +19,48 @@ import { Utils } from 'src/app/utils/utils';
   styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent implements OnInit, OnDestroy {
+  @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
   private subscription: Subscription = new Subscription();
   private utils: Utils = new Utils;
   private currentUser: Person;
+  private calendarApi;
 
   calendarOptions: CalendarOptions = {
+    customButtons: {
+      previousButton: {
+        text: '<',
+        click: this.prev.bind(this)
+
+      },
+      todayButton: {
+        text: 'Today',
+        click: this.today.bind(this)
+      },
+      nextButton: {
+        text: '>',
+        click: this.next.bind(this)
+      },
+      monthButton: {
+        text: 'Month',
+        click: this.month.bind(this)
+      },
+      weekButton: {
+        text: 'Week',
+        click: this.week.bind(this)
+      },
+      dayButton: {
+        text: 'Day',
+        click: this.day.bind(this)
+      },
+      listWeekButton: {
+        text: 'List',
+        click: this.listWeek.bind(this)
+      }
+    },
     headerToolbar: {
-      left: 'prev,today,next',
+      left: 'previousButton,todayButton,nextButton',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: 'monthButton,weekButton,dayButton,listWeekButton'
     },
     initialView: 'timeGridWeek',
     slotMinTime: "05:00:00",
@@ -43,29 +76,28 @@ export class CalendarComponent implements OnInit, OnDestroy {
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventDragMinDistance:10000, //disable dragging
-    dateClick: this.test.bind(this)
+
   };
   basicModalCloseResult: string = '';
   appointments: any[] = [];
 
-  constructor(private modalService: NgbModal, private appointmentService: AppointmentService, private personService: PersonService) {  }
+  constructor(private modalService: NgbModal, private appointmentService: AppointmentService, private personService: PersonService ) {  }
 
   ngOnInit(): void {
     this.getCurrentUser();
-    //this.getAllAppointments();
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription.unsubscribe(); 
   }
 
-  test(){
-    console.log("test")
-  }
-
+  /**
+   * gets the current user
+   */
   getCurrentUser(){
     this.subscription.add(this.personService.getCurrentUser().subscribe((employee: Person) => {
       this.currentUser = employee;
+      this.calendarApi = this.fullcalendar.getApi();
       this.getAppointments(); 
     }));
   }
@@ -74,9 +106,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
    * gets all appointments for the current user 
    */
   getAppointments(){
+    const weekRange = this.getDates();
     this.calendarOptions.events = null
     const appointments: any[] = [];
-    const weekRange = this.utils.getWeekRange()
     this.subscription.add(this.personService.getAppointments(this.currentUser.personId, weekRange[0], weekRange[1]).subscribe((rAppointment:Appointment[])=>{
       rAppointment.forEach(appointment => {
         const translated = this.utils.translateAppointment(appointment)
@@ -85,6 +117,29 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.appointments = appointments;
       this.calendarOptions.events = this.appointments
     }))
+  }
+
+  getDates(){
+    const view = this.calendarApi.view.type;
+    const currentDate = this.calendarApi.getDate();
+    console.log(view)
+    var range;
+    switch (view) {
+      case "timeGridWeek":
+        range = this.utils.getWeekRange(currentDate)
+        break;
+      case "dayGridMonth":
+        range = this.utils.getMonthRange(currentDate)
+        break;
+      case "timeGridDay":
+        range = this.utils.getDayRange(currentDate)
+        break;
+      case "listWeek":
+        range = this.utils.getWeekRange(currentDate)
+        break;
+    }
+    console.log(range)
+    return range
   }
 
   /**
@@ -141,6 +196,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * creates a new appointment in the backend with the given appointment
+   * @param rAppointment to push to the backend
+   */
   createAppointment(rAppointment){
     this.subscription.add(this.appointmentService.createAppointment(rAppointment).subscribe(() => {
       Swal.fire({
@@ -157,6 +216,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }));
   }
 
+  /**
+   * creates a new customer with the given values
+   * @param rAppointment to create an appointment after creating a customer
+   * @param rCustomer to create a customer
+   */
   createCustomer( rAppointment: Appointment, rCustomer: Person){
     //verify moet eigenlijk gebeuren wanneer modal nog open is, maar geeft canceled TODO
     this.subscription.add(this.personService.getPersonByEmail(rCustomer.email).subscribe((response:Person)=>{
@@ -179,6 +243,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }))
   }
 
+  /**
+   * deletes the appointment with the given id
+   * @param event id of the appointment
+   */
   deleteAppointment(event){
     this.subscription.add(this.appointmentService.deleteAppointment(event).subscribe((rAppointment:Appointment)=>{
       Swal.fire({
@@ -195,6 +263,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }))
   }
 
+  /**
+   * updates the appointment with the given id
+   * @param event [id, appointment]
+   */
   updateAppointment(event){
     this.subscription.add(this.appointmentService.updateAppointment(event[0], event[1]).subscribe((Rappointment2:Appointment)=>{
       Swal.fire({
@@ -210,4 +282,40 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.getAppointments()
     })) 
   }
+
+  prev(){
+    this.calendarApi.prev();
+    this.getAppointments();
+  }
+
+  today(){
+    this.calendarApi.today();
+    this.getAppointments();
+  }
+
+  next(){
+    this.calendarApi.next();
+    this.getAppointments();
+  } 
+
+  month(){
+    this.calendarApi.changeView("dayGridMonth");
+    this.getAppointments();
+  }
+  
+  week(){
+    this.calendarApi.changeView("timeGridWeek");
+    this.getAppointments();
+  }
+
+  day(){
+    this.calendarApi.changeView("timeGridDay");
+    this.getAppointments();
+  }
+
+  listWeek(){
+    this.calendarApi.changeView("listWeek");
+    this.getAppointments();
+  }
+  
 }

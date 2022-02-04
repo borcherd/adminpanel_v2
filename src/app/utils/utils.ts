@@ -1,5 +1,4 @@
 import { ApexAxisChartSeries, ApexNonAxisChartSeries, ApexGrid, ApexChart, ApexXAxis, ApexYAxis, ApexMarkers, ApexStroke, ApexLegend, ApexResponsive, ApexTooltip, ApexFill, ApexDataLabels, ApexPlotOptions, ApexTitleSubtitle } from "ng-apexcharts";
-import { date } from "ngx-custom-validators/src/app/date/validator";
 import { Appointment } from "../models/appointment";
 
 export class Utils {
@@ -54,13 +53,45 @@ export class Utils {
   /**
    * Get week range of current date
    */
-   getWeekRange() {
-    var curr = new Date(); // get current date
-    var first = curr.getDate() - curr.getDay() + 1; // First day is the day of the month - the day of the week
-    var lastday = this.formatDate(new Date(curr.setDate(first+ 6)).toUTCString());
-    var firstday = this.formatDate(new Date(curr.setDate(first)).toUTCString());
+   getWeekRange(date = null) {
+    if (date == null){
+      var currFirst = new Date(); // get current date
+      var currLast = new Date();
+    } else{
+      var currFirst = new Date(date); // get current date
+      var currLast = new Date(date);
+    }
+    const first = currFirst.getDate() - currFirst.getDay() + 1; // First day is the day of the month - the day of the week
+    const firstday = this.formatDate(new Date(currFirst.setDate(first)).toUTCString());
+    const lastday = this.formatDate(new Date(currLast.setDate(first+ 6)).toUTCString());
     return [firstday, lastday];
   }
+
+  getMonthRange(date = null){
+    if (date == null){
+      var curr = new Date()
+    } else {
+      var curr = new Date(date)
+    }
+    var firstDay = this.formatDate(new Date(curr.getFullYear(), curr.getMonth(), 1).toUTCString());
+    var lastDay = this.formatDate(new Date(date.getFullYear(), date.getMonth() + 1, 0).toUTCString());
+    return [firstDay, lastDay]
+  }
+
+  getDayRange(date = null){
+    if (date == null){
+      var curr = new Date()
+    } else {
+      var curr = new Date(date)
+    }
+    var last = new Date();
+    last.setDate(curr.getDate()+1);
+
+    var firstDay = this.formatDate(curr.toUTCString())
+    var lastDay = this.formatDate(last.toUTCString())
+    return [firstDay, lastDay]
+  }
+
 
   getWeekFullRange(){
     const curr = new Date; // get current date s
