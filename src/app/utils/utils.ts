@@ -65,7 +65,7 @@ export class Utils {
     }
     const first = currFirst.getDate() - currFirst.getDay() + 1; // First day is the day of the month - the day of the week
     const firstday = this.formatDate(new Date(currFirst.setDate(first)).toUTCString());
-    const lastday = this.formatDate(new Date(currLast.setDate(first+ 6)).toUTCString());
+    const lastday = this.formatDate(new Date(currLast.setDate(first+ 7)).toUTCString());
     return [firstday, lastday];
   }
 

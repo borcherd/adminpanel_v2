@@ -106,7 +106,7 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
         day: Number(String(this.clickInfoInput.endStr).substring(8,10))}, Validators.required),
       description:new FormControl('', Validators.required),
       new_customer: new FormControl(false), 
-      customer_list: new FormControl(''),
+      customer_list: new FormControl('', Validators.required),
     }) ;
 
     this.new_customer.valueChanges.subscribe(checked => {
@@ -153,6 +153,10 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
   onSubmit(){
     const startDateTime = new Date(this.utils.createDateTime(this.formEvent.controls['startDate'].value, this.formEvent.controls['startTime'].value))
     const endDateTime = new Date(this.utils.createDateTime(this.formEvent.controls['endDate'].value, this.formEvent.controls['endTime'].value))
+    const currentDateTime = new Date();
+    console.log(startDateTime)
+    console.log(currentDateTime)
+    console.log(this.customer_firstName )
     if(endDateTime <= startDateTime){
       Swal.fire({
         title: 'Failed',
@@ -163,8 +167,17 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
         showConfirmButton:false,
         timer:5500
       }) 
-    }
-    else{
+    } else if (startDateTime < currentDateTime){
+      Swal.fire({
+        title: 'Failed',
+        text: 'Je kan geen afspraken maken in het verleden',
+        icon: 'error',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton:false,
+        timer:5500
+      }) 
+    } else {
       if(this.customer_firstName != null){
         this.createNewCustomer();
       }else{
@@ -207,10 +220,8 @@ export class NewEventFormComponent implements OnInit, OnDestroy {
       this.currentUser, 
       null)
     if (customer != null){
-      console.log("customer != null")
       this.submitCloseEventCustomerAppointment.emit([appointment, customer])
     } else{
-      console.log("customer == null")
       appointment.customer = this.formEvent.controls['customer_list'].value;
       this.submitCloseEventAppointment.emit(appointment)
     }

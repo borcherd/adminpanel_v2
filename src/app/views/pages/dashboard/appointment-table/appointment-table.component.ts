@@ -37,7 +37,7 @@ export class AppointmentTableComponent implements OnInit {
           index ++;
         }))
         this.subscription.add(this.personService.getPersonById(element.employee.personId).subscribe((rPerson2:Person)=>{
-          rAppointment[index].employee = rPerson2;
+          rAppointment[index2].employee = rPerson2;
           index2 ++;
         }))
         element.startDate = element.startDate.substring(0, 19)
